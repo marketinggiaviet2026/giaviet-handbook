@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Authentication Check -->
+    <script>
+        (function() {
+            if (localStorage.getItem('gv_auth_token') !== 'giaviet_v1') {
+                let isLocal = window.location.protocol === 'file:';
+                let loginPath = '/login.html';
+                
+                if (isLocal) {
+                    let parts = window.location.pathname.split('/');
+                    let baseIndex = parts.indexOf('gia-viet-handbook');
+                    if (baseIndex !== -1) {
+                        let depth = parts.length - baseIndex - 2;
+                        loginPath = (depth > 0 ? '../'.repeat(depth) : './') + 'login.html';
+                    } else {
+                        loginPath = 'login.html';
+                    }
+                } else {
+                    // Check depth by counting slashes after root to handle subdirectories on Vercel
+                    let pathDepth = window.location.pathname.replace(/^\/|\/$/g, '').split('/').length;
+                    if (window.location.pathname === '/' || window.location.pathname === '') pathDepth = 0;
+                    
+                    if (pathDepth > 0 && !window.location.pathname.endsWith('.html')) {
+                        loginPath = '../'.repeat(pathDepth) + 'login.html';
+                    } else if (pathDepth > 1) {
+                         loginPath = '../'.repeat(pathDepth - 1) + 'login.html';
+                    } else {
+                        loginPath = '/login.html';
+                    }
+                }
+                
+                const currentUrl = encodeURIComponent(isLocal ? window.location.href : window.location.pathname + window.location.search);
+                window.location.replace(loginPath + '?redirect=' + currentUrl);
+            }
+        })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+        }
+        /* Custom styling for the dashed line behind cards */
+        .connecting-line {
+            position: absolute;
+            top: 2.25rem; /* vertical align with the middle of the number circles */
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background-image: repeating-linear-gradient(90deg, #d1d5db 0, #d1d5db 4px, transparent 4px, transparent 8px);
+            z-index: 0;
+        }
+        .card-container {
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="p-8 md:p-12">
+    <div class="max-w-[64rem] mx-auto">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6 gap-4">
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900 mb-2 tracking-tight">Get Started</h1>
+                <p class="text-gray-500 text-sm">To start counting visitors and page views, follow these steps.</p>
+            </div>
+            <button class="flex items-center gap-1.5 border border-gray-200 bg-white rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition-colors ring-1 ring-black ring-opacity-5">
+                Next.js
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+        </div>
+
+        <!-- Cards Container -->
+        <div class="relative">
+            <!-- Connecting lines -->
+            <div class="hidden md:block connecting-line"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                <!-- Card 1 -->
+                <div class="bg-white border border-gray-200 rounded-[12px] p-6 shadow-sm flex flex-col card-container">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-7 h-7 bg-[#444] text-white rounded-full flex items-center justify-center text-[13px] font-semibold shrink-0">1</div>
+                        <h2 class="text-lg font-semibold text-gray-900 tracking-tight">Install our package</h2>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Start by installing <span class="font-medium text-gray-800">@vercel/analytics</span> in your existing project.</p>
+                    
+                    <div class="mt-auto border border-gray-200 rounded-lg overflow-hidden flex flex-col bg-white">
+                        <div class="flex items-center justify-between border-b border-gray-200 space-x-2 bg-[#fafafa] p-1.5 pl-2">
+                            <div class="flex space-x-1">
+                                <button class="bg-[#111] text-white text-[12px] px-3 py-1.5 rounded-md font-medium shadow-sm leading-none">npm</button>
+                                <button class="text-gray-500 hover:text-gray-800 hover:bg-gray-200/50 text-[12px] px-3 py-1.5 rounded-md font-medium transition-colors bg-[#f3f4f6] leading-none">yarn</button>
+                                <button class="text-gray-500 hover:text-gray-800 hover:bg-gray-200/50 text-[12px] px-3 py-1.5 rounded-md font-medium transition-colors bg-[#f3f4f6] leading-none">pnpm</button>
+                            </div>
+                            <button class="text-gray-400 hover:text-gray-600 p-1.5 rounded-md hover:bg-gray-100 transition-colors mr-0.5">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                            </button>
+                        </div>
+                        <div class="bg-white p-4 pt-5 pb-5 font-mono text-[13px] text-gray-800 overflow-x-auto whitespace-nowrap">
+                            npm i @vercel/analytics
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white border border-gray-200 rounded-[12px] p-6 shadow-sm flex flex-col card-container">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-7 h-7 bg-[#444] text-white rounded-full flex items-center justify-center text-[13px] font-semibold shrink-0">2</div>
+                        <h2 class="text-lg font-semibold text-gray-900 tracking-tight">Add the React component</h2>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Import and use the <code class="bg-[#f0f2f5] px-1.5 py-0.5 rounded text-[13px] font-mono text-gray-800 border border-gray-100">&lt;Analytics/&gt;</code> React component into your app's layout.</p>
+                    
+                    <div class="mt-auto border border-gray-200 rounded-lg overflow-hidden bg-white relative">
+                        <div class="p-4 pt-5 pb-5 font-mono text-[13px] whitespace-nowrap overflow-hidden relative group">
+                            <!-- Copy button over code -->
+                            <div class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm pl-2">
+                                <button class="bg-white border border-gray-200 text-gray-500 hover:text-gray-700 p-1.5 rounded-md shadow-sm transition-colors">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                </button>
+                            </div>
+                            <span class="text-[#e3116c]">import</span> { Analytics } <span class="text-[#e3116c]">from</span> <span class="text-[#138e4a]">'@vercel/an</span>
+                            
+                            <!-- Fake horizontal scrollbar -->
+                            <div class="absolute bottom-2 left-4 right-4 h-2 bg-[#d1d5db] rounded-full opacity-60"></div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-5 leading-relaxed">For full examples and further reference, please refer to our <a href="#" class="text-[#0070f3] hover:underline font-medium items-center inline-flex">documentation <svg class="ml-1 opacity-80" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a></p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white border border-gray-200 rounded-[12px] p-6 shadow-sm flex flex-col card-container">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-7 h-7 bg-[#444] text-white rounded-full flex items-center justify-center text-[13px] font-semibold shrink-0">3</div>
+                        <h2 class="text-lg font-semibold text-gray-900 tracking-tight leading-tight">Deploy & Visit<br>your Site</h2>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Deploy your changes and visit the deployment to collect your page views.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-2">If you don't see data after 30 seconds, please check for content blockers and try to navigate between pages on your site.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 text-sm text-[#999] font-medium">
+            Or, install automatically with Vercel Agent (free).
+        </div>
+    </div>
+</body>
+</html>

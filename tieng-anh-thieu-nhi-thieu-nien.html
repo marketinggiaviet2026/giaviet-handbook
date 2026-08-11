@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <!-- Authentication Check -->
+    <script>
+        (function() {
+            if (localStorage.getItem('gv_auth_token') !== 'giaviet_v1') {
+                let isLocal = window.location.protocol === 'file:';
+                let loginPath = '/login.html';
+                
+                if (isLocal) {
+                    let parts = window.location.pathname.split('/');
+                    let baseIndex = parts.indexOf('gia-viet-handbook');
+                    if (baseIndex !== -1) {
+                        let depth = parts.length - baseIndex - 2;
+                        loginPath = (depth > 0 ? '../'.repeat(depth) : './') + 'login.html';
+                    } else {
+                        loginPath = 'login.html';
+                    }
+                } else {
+                    // Check depth by counting slashes after root to handle subdirectories on Vercel
+                    let pathDepth = window.location.pathname.replace(/^\/|\/$/g, '').split('/').length;
+                    if (window.location.pathname === '/' || window.location.pathname === '') pathDepth = 0;
+                    
+                    if (pathDepth > 0 && !window.location.pathname.endsWith('.html')) {
+                        loginPath = '../'.repeat(pathDepth) + 'login.html';
+                    } else if (pathDepth > 1) {
+                         loginPath = '../'.repeat(pathDepth - 1) + 'login.html';
+                    } else {
+                        loginPath = '/login.html';
+                    }
+                }
+                
+                const currentUrl = encodeURIComponent(isLocal ? window.location.href : window.location.pathname + window.location.search);
+                window.location.replace(loginPath + '?redirect=' + currentUrl);
+            }
+        })();
+    </script>
+
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tiếng Anh Thiếu nhi - Thiếu niên - Handbook</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d59f2",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"], "body": ["Be Vietnam Pro", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .card {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid white;
+            box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(6px);
+            border-radius: 17px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.5s;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            color: black;
+            user-select: none;
+        }
+
+        .card:hover {
+            border: 1px solid #0d59f2;
+            transform: scale(1.02);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    
+        /* From Uiverse.io by vinodjangid07 */ 
+        .InputContainer {
+          width: 210px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(to bottom,rgb(227, 213, 255),rgb(255, 231, 231));
+          border-radius: 30px;
+          overflow: hidden;
+          cursor: text;
+          box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+        }
+
+        .input {
+          width: 200px;
+          height: 36px;
+          border: none;
+          outline: none;
+          caret-color: rgb(255, 81, 0);
+          background-color: rgb(255, 255, 255);
+          border-radius: 30px;
+          padding-left: 15px;
+          letter-spacing: 0.8px;
+          color: rgb(19, 19, 19);
+          font-size: 13.4px;
+        }
+
+    </style>
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#0d121c] dark:text-white font-body">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <header class="w-full bg-white dark:bg-[#1a202c] border-b border-[#e7ebf4] dark:border-gray-700 sticky top-0 z-50">
+<div class="w-full flex justify-center">
+<div class="w-full max-w-[1280px] px-4 md:px-10 py-3 flex items-center justify-between">
+<div class="flex items-center gap-2 flex-shrink-0 md:w-48">
+<img src="picture/Logo.png" alt="Gia Viet" class="h-10 w-auto object-contain">
+</div>
+<div class="hidden md:flex flex-1 items-center justify-start gap-4 xl:gap-6 whitespace-nowrap ml-8 mr-4">
+<a id="nav-trang-chu" class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap" href="index.html">Trang chủ</a>
+<a id="nav-ve-gia-viet" class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap" href="ve-gia-viet.html">Về Gia Việt</a>
+<div class="relative group py-2 flex items-center">
+    <a id="nav-to-chuc" class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer" href="#" onclick="event.preventDefault()">
+        Tổ chức & Nhân sự
+        <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+    </a>
+    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[360px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+        <div class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden">
+            <a href="quy-trinh-tiep-nhan-giao-vien-moi.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình tiếp nhận giáo viên mới</a>
+            <a href="quy-trinh-xin-ngung-cong-tac.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình giáo viên xin ngưng công tác</a>
+            <a href="quy-trinh-cham-cong-tinh-luong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình chấm công & tính lương giảng dạy</a>
+            <a href="nhan-su-phu-trach.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Nhân sự phụ trách - Liên hệ</a>
+            <a href="quy-dinh-tac-phong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Quy định về tác phong</a>
+        </div>
+    </div>
+</div>
+<div class="relative group py-2 flex items-center">
+    <a id="nav-chinh-sach" class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer" href="#" onclick="event.preventDefault()">
+        Chính sách & Phúc lợi
+        <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+    </a>
+    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+        <div class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden">
+            <a href="che-do-luong-thuong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Chế độ lương - Thưởng</a>
+            <a href="dai-ngo-giao-vien.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Đãi ngộ Giáo viên Gia Việt</a>
+            <a href="chinh-sach-ho-tro-khac.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Chính sách hỗ trợ khác</a>
+        </div>
+    </div>
+</div>
+<div class="relative group py-2 flex items-center">
+    <a id="nav-dao-tao" class="text-primary text-sm font-bold border-b-2 border-primary pb-0.5 whitespace-nowrap flex items-center gap-1 cursor-pointer" href="#" onclick="event.preventDefault()">
+        Đào tạo & Đảm bảo chất lượng
+        <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+    </a>
+    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[700px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
+        <div class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-6 px-8 flex gap-8 relative overflow-hidden text-left whitespace-normal">
+            <div class="flex flex-col gap-6 flex-1">
+                <div>
+                        <h4 class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Chương trình Đào tạo</h4>
+                        <ul class="flex flex-col gap-2.5">
+                            <li><a href="tieng-anh-thieu-nhi-thieu-nien.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Tiếng Anh Thiếu nhi - Thiếu niên</a></li>
+                            <li><a href="#" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Tiếng Anh Người lớn</a></li>
+                            <li><a href="flexi-time.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Flexi-time</a></li>
+                        </ul>
+                </div>
+                <div>
+                        <h4 class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Chương trình chuyên biệt</h4>
+                        <ul class="flex flex-col gap-2.5">
+                            <li><a href="chuong-trinh-chuyen-biet.html#ltp" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Learning Through Playing (LTP)</a></li>
+                            <li><a href="chuong-trinh-chuyen-biet.html#elite-kids" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Elite Kids</a></li>
+                        </ul>
+                </div>
+                <div>
+                        <h4 class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Đảm bảo chất lượng</h4>
+                        <ul class="flex flex-col gap-2.5">
+                            <li><a href="du-gio-dong-nghiep.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Dự giờ đồng nghiệp (Peer-Observation)</a></li>
+                            <li><a href="cpd.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Chương trình CPD</a></li>
+                            <li><a href="chuong-trinh-cop.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Chương trình CoP</a></li>
+                            <li><a href="fast-track-training.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Hỗ trợ Fast-Track Training</a></li>
+                            <li><a href="mentoring-1-1.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Hỗ trợ Mentoring 1-1</a></li>
+                        </ul>
+                </div>
+            </div>
+            <div class="flex flex-col gap-6 flex-1">
+                <div>
+                        <h4 class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">Quy định & Quy trình giảng dạy</h4>
+                        <ul class="flex flex-col gap-2.5">
+                            <li><a href="giao-trinh-tai-lieu.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Giáo trình & Tài liệu giảng dạy</a></li>
+                            <li><a href="quy-dinh-diem-danh.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy định Điểm danh</a></li>
+                            <li><a href="quy-trinh-giang-day.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy trình giảng dạy và khen thưởng</a></li>
+                            <li><a href="quy-dinh-so-lien-lac.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy định Sổ liên lạc</a></li>
+                            <li><a href="quy-dinh-phu-dao.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy định Phụ đạo (YLE)</a></li>
+                            <li><a href="chinh-sach-hoc-bong.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy định chính sách học bổng YLE</a></li>
+                            <li><a href="quy-dinh-khao-thi.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy trình Khảo thí</a></li>
+                            <li><a href="quy-dinh-nghi-phep.html" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy định nghỉ phép</a></li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="relative group py-2 flex items-center">
+    <a id="nav-he-thong" class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer" href="#">
+        Hệ thống & Hỗ trợ
+        <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+    </a>
+    <div class="absolute top-full right-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+        <div class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden text-left">
+            <a href="app-gia-viet.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50 last:border-0">App Gia Việt</a>
+            <a href="quy-dinh-in-an.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50 last:border-0">Quy định in ấn & Hỗ trợ khác</a>
+            <a href="gop-y-phan-hoi.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Kênh nhận góp ý & phản hồi</a>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<button onclick="localStorage.removeItem('gv_auth_token'); const currentUrl = encodeURIComponent(window.location.protocol === 'file:' ? window.location.href : window.location.pathname + window.location.search); window.location.href = (window.location.protocol === 'file:' ? 'login.html' : '/login.html') + '?redirect=' + currentUrl;" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold tracking-[0.015em] ml-4">
+<span class="truncate">Đăng xuất</span>
+</button>
+</div>
+<div class="md:hidden text-[#0d121c] dark:text-white">
+<span class="material-symbols-outlined">menu</span>
+</div>
+</div>
+</div>
+</header>
+
+        <main class="flex flex-col items-center w-full bg-slate-50 min-h-screen">
+            <!-- Breadcrumb & Title Area -->
+            <div class="w-full bg-white py-12 px-4 md:px-10 border-b border-gray-100 shadow-sm relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-64 h-64 bg-blue-50/50 rounded-full translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+                <div class="absolute right-0 top-0 w-32 h-32 text-blue-100 translate-x-1/4 -translate-y-1/4 opacity-30" style="background-image: radial-gradient(#0d59f2 2px, transparent 2px); background-size: 16px 16px;"></div>
+
+                <div class="w-full max-w-[1280px] mx-auto relative z-10 font-body">
+                    <h1 class="text-3xl md:text-4xl font-bold text-[#00174f] mb-6 font-display tracking-wide">Tiếng Anh Thiếu nhi - Thiếu niên</h1>
+                    <div class="flex items-center gap-2 text-[15px] text-gray-500 font-body">
+                        <a href="index.html" class="flex items-center hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">home</span>
+                            <span class="ml-1">Trang chủ</span>
+                        </a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors">Chương trình Đào tạo</a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <span class="text-[#0d121c]">Tiếng Anh Thiếu nhi - Thiếu niên</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 Column Layout -->
+            <div class="w-full max-w-[1440px] px-4 md:px-10 py-16 mx-auto">
+                <div class="flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
+                    <!-- Left Column: Content -->
+                    <div class="w-full md:w-[70%] lg:w-[75%] font-body text-gray-800 leading-relaxed space-y-8">
+                        <!-- Redesigned High-End Banner -->
+                        <div
+                            class="w-full h-[240px] bg-gradient-to-br from-[#00174f] via-[#0537a1] to-[#0d59f2] relative flex items-center justify-center p-8 overflow-hidden z-0 rounded-2xl shadow-md border border-blue-900/10">
+                            <!-- Premium Radial Light Overlay -->
+                            <div
+                                class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]">
+                            </div>
+
+                            <!-- Pure CSS Elegant Geometric Glassmorphic Shapes -->
+                            <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-white/5 blur-2xl"></div>
+                            <div class="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-white/10 blur-3xl">
+                            </div>
+
+                            <div class="relative z-10 flex flex-col items-center text-center">
+                                <h2
+                                    class="text-white text-2xl md:text-3xl font-black font-display tracking-tight leading-tight px-4 max-w-3xl uppercase">
+                                    Chương trình tiếng Anh Thiếu nhi - Thiếu niên
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100/50 p-6 md:p-8">
+                            
+
+<div class="space-y-8">
+    <section>
+        <h3 class="text-[#00174f] text-2xl font-bold font-display mb-4">1. Kinder Play & Happy Kinder</h3>
+        <p class="text-gray-700 dark:text-gray-300 font-semibold mb-6">Chương trình tiếng Anh mầm non dành cho trẻ từ 3,5 – 5 tuổi</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Left column of points -->
+            <div class="space-y-4">
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">schema</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Lộ trình học bài bản</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Gồm 06 cấp độ liên tiếp:</p>
+                        <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-1 space-y-1">
+                            <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 02 cấp độ Kinder Play</li>
+                            <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 04 cấp độ Happy Kinder</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">diversity_1</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Phát triển phù hợp lứa tuổi</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Đảm bảo tính liên tục và phát triển phù hợp với đặc điểm nhận thức, tâm sinh lý của trẻ mầm non.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">extension</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Làm quen tự nhiên</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Giúp trẻ tiếp cận tiếng Anh thông qua:</p>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-gray-600 dark:text-gray-300 text-sm font-medium">
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Trò chơi</span>
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Bài hát</span>
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Vận động</span>
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Kể chuyện</span>
+                            <span class="flex items-center gap-1.5 col-span-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Hoạt động trải nghiệm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">hearing</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Phản xạ tự nhiên</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Hình thành phản xạ nghe – nói tự nhiên, không áp lực.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column of points -->
+            <div class="space-y-4">
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">psychology</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Phát triển toàn diện</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Chú trọng phát triển các khía cạnh:</p>
+                        <div class="grid grid-cols-1 gap-1 mt-2 text-gray-600 dark:text-gray-300 text-sm font-medium">
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Nhận thức</span>
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Cảm xúc – xã hội</span>
+                            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Kỹ năng sống</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">emoji_events</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Thói quen tích cực</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Hình thành thói quen học tập tích cực, khả năng tương tác, hợp tác và tự tin thể hiện bản thân.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">child_care</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Lấy trẻ làm trung tâm</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Phương pháp giảng dạy lấy trẻ làm trung tâm, thời lượng học phù hợp.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">favorite</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Khơi nguồn đam mê</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Khơi dậy hứng thú và tình yêu với tiếng Anh từ sớm.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                    <span class="material-symbols-outlined text-primary mt-0.5">trending_up</span>
+                    <div>
+                        <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Nền tảng tương lai</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Tạo nền tảng vững chắc để chuyển tiếp lên các cấp độ tiếng Anh cao hơn trong tương lai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-[#00174f] text-2xl font-bold font-display mb-4">2. First Friends</h3>
+        <p class="text-gray-700 dark:text-gray-300 font-semibold mb-2">Chương trình tiếng Anh dành cho trẻ từ 5 – 6 tuổi</p>
+        <p class="text-gray-500 dark:text-gray-400 italic mb-6">Phù hợp với học viên chuẩn bị vào tiểu học</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Card 1: Nền tảng phát triển -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">school</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Năng lực nền tảng</h4>
+                    <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-2 space-y-1">
+                        <li class="flex items-start gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span>
+                            <span>Hỗ trợ trẻ làm quen và phát triển năng lực tiếng Anh nền tảng.</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span>
+                            <span>Tạo bước đệm vững chắc trước khi chuyển sang các cấp độ học tập cao hơn.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 2: Kỹ năng trọng tâm -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">record_voice_over</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">02 Kỹ năng trọng tâm</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Tập trung phát triển toàn diện hai kỹ năng:</p>
+                    <div class="flex gap-4 mt-2 font-semibold text-primary text-sm">
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-3 py-1 rounded-lg">Nghe</span>
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-3 py-1 rounded-lg">Nói</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Nhận biết cơ bản -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">abc</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Nhận biết tiếng Anh cơ bản</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Xây dựng vốn từ và ngữ pháp căn bản:</p>
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-gray-600 dark:text-gray-300 text-sm font-medium">
+                        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Bảng chữ cái</span>
+                        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Từ vựng</span>
+                        <span class="flex items-center gap-1.5 col-span-2"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Mẫu câu đơn giản</span>
+                    </div>
+                    <p class="text-gray-500 dark:text-gray-400 text-xs mt-2 italic">Nội dung học gắn liền với các chủ đề quen thuộc trong đời sống hằng ngày.</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Phương pháp giáo dục -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">extension</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Phương pháp học vui nhộn</h4>
+                    <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-2 space-y-1">
+                        <li class="flex items-start gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span>
+                            <span>Kết hợp hài hòa giữa hoạt động học và chơi phù hợp với trẻ cuối cấp mầm non.</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span>
+                            <span>Hoàn thành sản phẩm học tập thực tế sau mỗi bài học.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 5: Củng cố & Ghi nhớ -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">wb_sunny</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Học tập trực quan sinh động</h4>
+                    <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-2 space-y-1">
+                        <li class="flex items-start gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span>
+                            <span>Sử dụng hình ảnh và đồ vật trực quan để củng cố kiến thức dễ dàng.</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span>
+                            <span>Tăng cường khả năng ghi nhớ dài hạn và luôn duy trì hứng thú học tập.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 6: Kết quả đầu ra -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 md:col-span-2 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">verified</span>
+                <div class="w-full">
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Kết quả đầu ra dự kiến</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                        <div class="space-y-2">
+                            <p class="text-[#00174f] dark:text-blue-400 font-semibold text-xs uppercase tracking-wider">Kỹ năng giao tiếp</p>
+                            <ul class="text-gray-600 dark:text-gray-300 text-sm list-none space-y-1">
+                                <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Giao tiếp tiếng Anh cơ bản</li>
+                                <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Phản xạ nghe - nói tự nhiên</li>
+                                <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Giới thiệu: Tên, tuổi, màu sắc, con vật, món ăn yêu thích</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-[#00174f] dark:text-blue-400 font-semibold text-xs uppercase tracking-wider">Từ vựng & Phát âm</p>
+                            <ul class="text-gray-600 dark:text-gray-300 text-sm list-none space-y-1">
+                                <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Chủ đề: Nông trại, nghề nghiệp, trang phục, trường học</li>
+                                <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Phát âm bảng chữ cái tiếng Anh & Số đếm cơ bản</li>
+                                <li class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Tạo nền tảng để đọc - viết ở các giai đoạn sau</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-[#00174f] text-2xl font-bold font-display mb-4">3. Family and Friends</h3>
+        <p class="text-gray-700 dark:text-gray-300 font-semibold mb-2">Chương trình tiếng Anh dành cho học viên Tiểu học từ 6 – 11 tuổi</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <!-- Card 1: Phát triển toàn diện -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">star</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Phát triển toàn diện</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Xây dựng và phát triển năng lực sử dụng tiếng Anh toàn diện, phù hợp đặc điểm nhận thức và khả năng của học sinh Tiểu học.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Nội dung đời sống -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">auto_stories</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Nội dung sinh động & Trực quan</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Xoay quanh chủ đề gần gũi với đời sống thường nhật cùng hệ thống hình ảnh minh họa sinh động, bắt mắt.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Tiếp cận dễ dàng -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">sentiment_satisfied</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Tạo hứng thú từ ban đầu</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Giúp học viên tiếp cận dễ dàng, hiểu bài nhanh chóng và hình thành niềm yêu thích tiếng Anh. Đặc biệt phù hợp cho người mới bắt đầu.</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Giao tiếp & Phát âm chuẩn -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">record_voice_over</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Chú trọng Ngữ âm & Giao tiếp</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Phát triển đồng đều kỹ năng, hướng tới phát âm chuẩn và phản xạ nghe - nói tự tin trong cuộc sống hàng ngày.</p>
+                </div>
+            </div>
+
+            <!-- Card 5: Ngữ pháp ứng dụng -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">menu_book</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Ngữ pháp kết hợp Kỹ năng</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Học viên hiểu sâu cấu trúc ngôn ngữ và được rèn luyện để vận dụng linh hoạt trong các ngữ cảnh giao tiếp thực tế.</p>
+                </div>
+            </div>
+
+            <!-- Card 6: Tự tin & Xử lý thông tin -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">emoji_objects</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Tự tin tương tác & Tư duy</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Học qua từ vựng và tình huống gần gũi giúp trẻ nâng cao sự tự tin và tăng cường khả năng tiếp nhận, xử lý thông tin đa dạng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-[#00174f] text-2xl font-bold font-display mb-4">4. EFT - Foundation / EFT - Global Teens</h3>
+        <p class="text-gray-700 dark:text-gray-300 font-semibold mb-2">Dành cho học viên Trung học cơ sở từ 11 – 15 tuổi</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <!-- Card 1: Năng lực ngôn ngữ & Hội nhập -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">language</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Hội nhập toàn cầu</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Xây dựng nền tảng ngôn ngữ học thuật vững chắc cùng các kỹ năng cần thiết để trẻ tự tin hội nhập trong môi trường quốc tế.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Lộ trình & Đầu vào đa dạng -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">trending_up</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Lộ trình chuẩn CEFR</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Lộ trình phát triển toàn diện từ trình độ A1+ đến B1+ theo khung chuẩn châu Âu CEFR, phù hợp với năng lực của từng học viên.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: 04 Khía cạnh cốt lõi (4Cs) -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">group_work</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Phát triển 04 kỹ năng cốt lõi (4Cs)</h4>
+                    <div class="grid grid-cols-2 gap-2 mt-2 font-semibold text-primary text-xs">
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-2 py-1 rounded text-center">Competence (Năng lực)</span>
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-2 py-1 rounded text-center">Creativity (Sáng tạo)</span>
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-2 py-1 rounded text-center">Collaboration (Hợp tác)</span>
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-2 py-1 rounded text-center">Curiosity (Tò mò)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Học qua dự án -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">assignment</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Học qua dự án thực tế</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Bài học thiết kế theo dạng dự án và nhiệm vụ (Projects & Tasks) thực tế, giúp học viên ứng dụng ngôn ngữ giao tiếp một cách tự nhiên nhất.</p>
+                </div>
+            </div>
+
+            <!-- Card 5: Kỹ năng & Giá trị sống -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">favorite</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Lồng ghép Giá trị sống</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-xs mt-1 font-semibold uppercase tracking-wider">Kỹ năng công dân toàn cầu:</p>
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-1 mt-1 text-gray-600 dark:text-gray-300 text-sm font-medium">
+                        <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-primary"></span> Tự chăm sóc</span>
+                        <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-primary"></span> Quản trị cảm xúc</span>
+                        <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-primary"></span> Bảo vệ môi trường</span>
+                        <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-primary"></span> Tôn trọng khác biệt</span>
+                        <span class="flex items-center gap-1 col-span-2"><span class="w-1 h-1 rounded-full bg-primary"></span> Yêu thương, sẻ chia & biết ơn</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Luyện thi quốc tế -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">workspace_premium</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Tích hợp Luyện thi Cambridge</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Lồng ghép lộ trình luyện thi chứng chỉ quốc tế giúp học viên tự tin chinh phục:</p>
+                    <div class="flex gap-4 mt-2 font-semibold text-primary text-sm">
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-3 py-1 rounded-lg">A2 KET for Schools</span>
+                        <span class="bg-blue-100/60 dark:bg-blue-900/40 px-3 py-1 rounded-lg">B1 PET for Schools</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-[#00174f] text-2xl font-bold font-display mb-4">5. Luyện thi YLE Starters / Movers / Flyers</h3>
+        <p class="text-gray-700 dark:text-gray-300 font-semibold mb-6">Chương trình chuẩn bị toàn diện cho học sinh Tiểu học thi chứng chỉ Cambridge YLE</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Card 1: Lộ trình & Kỹ năng -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">schema</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Lộ trình rõ ràng</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Phân cấp bài bản theo chuẩn kỳ thi Cambridge YLE, phát triển toàn diện cả 04 kỹ năng: Nghe, Nói, Đọc, Viết.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Định dạng & Thiết kế -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">assignment_turned_in</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Làm quen đề thi từ sớm</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Giúp học sinh làm quen cấu trúc và thành thạo định dạng phòng thi quốc tế. Học qua hình ảnh sinh động và các chủ đề quen thuộc hằng ngày.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Chất lượng & Phương pháp -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">verified</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Chú trọng phản xạ phát âm</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Tập trung rèn luyện ngữ âm và kỹ năng giao tiếp xuyên suốt chương trình, kết hợp với các bài thi thử định kỳ định hướng kết quả cao.</p>
+                </div>
+            </div>
+            
+            <!-- Card 4: Starters -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">child_care</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">YLE Starters</h4>
+                    <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-2 space-y-1">
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Xây dựng từ vựng, ngữ âm & mẫu câu cơ bản.</span></li>
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Làm quen cấu trúc đề thi Starters.</span></li>
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Tạo dựng tự tin & phản xạ giao tiếp ban đầu.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 5: Movers -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">trending_up</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">YLE Movers</h4>
+                    <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-2 space-y-1">
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Mở rộng vốn từ vựng & ngữ pháp nâng cao.</span></li>
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Hiểu và dùng ngôn ngữ tốt theo ngữ cảnh.</span></li>
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Rèn phát âm chuẩn và kỹ năng làm bài thi.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 6: Flyers -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">workspace_premium</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">YLE Flyers</h4>
+                    <ul class="text-gray-600 dark:text-gray-300 text-sm list-none pl-0 mt-2 space-y-1">
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Hoàn thiện kỹ năng ngôn ngữ và học thuật.</span></li>
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Nắm vững chiến thuật & chiến lược làm bài Flyers.</span></li>
+                        <li class="flex items-start gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></span><span>Luyện đề mẫu và thi thử định kỳ thường xuyên.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-[#00174f] text-2xl font-bold font-display mb-4">6. Luyện thi KET for Schools</h3>
+        <p class="text-gray-700 dark:text-gray-300 font-semibold mb-2">Dành cho học viên Tiểu học và Trung học cơ sở (Trình độ A2)</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <!-- Card 1: Khóa học chuẩn hóa -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">schedule</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Khóa học tập trung 12 tuần</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Chương trình ngắn hạn tập trung giúp hệ thống hóa, củng cố toàn bộ kiến thức ngữ pháp và từ vựng cốt lõi.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Rèn luyện 4 kỹ năng -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">psychology</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Bám sát cấu trúc đề thi</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Rèn luyện toàn diện cả 04 kỹ năng Nghe, Nói, Đọc, Viết bám sát định dạng cấu trúc bài thi Cambridge KET chính thức.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Chiến thuật phòng thi -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">menu_book</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Chiến lược & Kỹ năng làm bài</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Trang bị các chiến thuật làm bài thi hiệu quả cho từng phần thi, giúp tối ưu hóa điểm số và tránh bẫy đề thi.</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Thực hành Mock Test -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">assignment</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Thi thử (Mock Tests) liên tục</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Tổ chức thi thử thường xuyên trong môi trường phòng thi thực tế, đánh giá liên tục để học viên tiến bộ rõ rệt.</p>
+                </div>
+            </div>
+
+            <!-- Card 5: Tự tin chinh phục -->
+            <div class="flex items-start gap-3 bg-blue-50/50 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-100/50 dark:border-blue-900/30 md:col-span-2 hover:scale-[1.01] hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 active:scale-[0.99] transition-all duration-300 cursor-pointer">
+                <span class="material-symbols-outlined text-primary mt-0.5">verified</span>
+                <div>
+                    <h4 class="font-bold text-[#00174f] dark:text-blue-300 text-sm">Vững vàng tâm lý phòng thi</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Giúp học viên rèn luyện bản lĩnh phòng thi, làm quen với áp lực thời gian để tự tin chinh phục và đạt kết quả tối ưu trong kỳ thi chính thức.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+                        </div>
+                    </div>
+
+                    
+                    <!-- Right Column: Sidebar -->
+                    <div class="w-full md:w-[30%] lg:w-[25%] flex flex-col gap-10 mb-8 md:mb-0 sticky top-32 self-start">
+                        <div>
+                            <h3 class="text-[#00174f] text-2xl font-bold font-display mb-6 tracking-tight">Danh mục bài viết</h3>
+                            <ul class="flex flex-col gap-5 font-body text-[16px] font-bold text-[#00174f]">
+                        <li><a href="ve-gia-viet.html" class="hover:text-primary transition-colors flex items-center group">Về Gia Việt</a></li>
+                                <li>
+                                    <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors flex items-center group">Tổ chức & Nhân sự</a>
+                                </li>
+                                <li class="flex flex-col gap-3">
+                                    <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors">Chương trình Đào tạo</a>
+                                    <ul class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                        <li><a href="che-do-luong-thuong.html" class="text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary before:mr-2">Chế độ lương - Thưởng</a></li>
+                                        <li><a href="dai-ngo-giao-vien.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Đãi ngộ Giáo viên Gia Việt</a></li>
+                                        <li><a href="chinh-sach-ho-tro-khac.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Chính sách hỗ trợ khác</a></li>
+                                    </ul>
+                                </li>
+                                <li class="flex flex-col gap-3">
+                            <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors flex items-center group">Đào tạo & Đảm bảo chất lượng</a>
+                            <ul class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                <li><a href="giao-trinh-tai-lieu.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Giáo trình & Tài liệu giảng dạy</a></li>
+                                        <li><a href="quy-dinh-diem-danh.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định Điểm danh</a></li>
+                                        <li><a href="quy-trinh-giang-day.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình giảng dạy và khen thưởng</a></li>
+                                        <li><a href="quy-dinh-so-lien-lac.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định Sổ liên lạc</a></li>
+                                        <li><a href="quy-dinh-phu-dao.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định Phụ đạo</a></li>
+                                        <li><a href="chinh-sach-hoc-bong.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Chính sách Học bổng</a></li>
+                                        <li><a href="quy-dinh-khao-thi.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định Khảo thí</a></li>
+                                        <li><a href="quy-dinh-nghi-phep.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định Nghỉ phép</a></li>
+                            </ul>
+                        </li>
+                                <li class="flex flex-col gap-3">
+                                    <a href="#" class="hover:text-primary transition-colors flex items-center group font-medium text-[#00174f]">Hệ thống & Hỗ trợ</a>
+                                    <ul class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                        <li><a href="app-gia-viet.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">App Gia Việt</a></li>
+                                        <li><a href="quy-dinh-in-an.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định in ấn & Hỗ trợ khác</a></li>
+                                        <li><a href="gop-y-phan-hoi.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Kênh nhận góp ý & phản hồi</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="w-full bg-[#0d59f2] text-white py-12">
+<div class="w-full flex justify-center">
+<div class="w-full max-w-[1280px] px-4 md:px-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-8 w-full">
+<div class="lg:col-span-4">
+<div class="flex items-center gap-2 mb-4">
+<h3 class="text-xl font-bold font-display whitespace-nowrap">Gia Viet English Language Center</h3>
+</div>
+<p class="text-blue-100 text-sm leading-relaxed font-body">
+                                    Tiếng Anh và sự tự tin vươn ra thế giới.
+                                </p>
+</div>
+<div class="lg:col-span-2">
+<h4 class="font-bold text-lg mb-4 font-display">Về chúng tôi</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li><a class="hover:text-white transition-colors" href="ve-gia-viet.html">Về Gia Việt</a></li>
+<li><a class="hover:text-white transition-colors" href="quy-dinh-tac-phong.html">Quy định tác phong</a></li>
+<li><a class="hover:text-white transition-colors" href="che-do-luong-thuong.html">Chế độ lương - Thưởng</a></li>
+<li><a class="hover:text-white transition-colors" href="dai-ngo-giao-vien.html">Đãi ngộ giáo viên</a></li>
+</ul>
+</div>
+<div class="lg:col-span-3">
+                                <h4 class="font-bold text-lg mb-4 font-display">Chương trình đào tạo</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li><a class="hover:text-white transition-colors" href="tieng-anh-thieu-nhi-thieu-nien.html">Tiếng Anh Thiếu nhi - Thiếu niên</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Tiếng Anh Người lớn</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Flexi-time English Program</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Elite Kids Program</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Liên kết đào tạo</a></li>
+</ul>
+</div>
+<div class="lg:col-span-3">
+                                <h4 class="font-bold text-lg mb-4 font-display">Liên hệ</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm mt-0.5">location_on</span>
+<span>Trụ sở chính: Số 39, Đường Mậu Thân, Phường Ninh Kiều, Thành phố Cần Thơ</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>0292 383 1000</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@giaviet.edu.vn</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="border-t border-blue-400/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-blue-200 text-sm font-body">© 2026 Gia Viet English Center. All rights reserved.</p>
+<div class="flex gap-4 font-body">
+<a class="text-blue-200 hover:text-white transition-colors" href="https://www.facebook.com/giavietcenter" target="_blank">Facebook</a>
+<a class="text-blue-200 hover:text-white transition-colors" href="https://youtube.com/@trungtamanhngugiaviet?si=iZlHr2h5nTGlV0TS" target="_blank">Youtube</a>
+<a class="text-blue-200 hover:text-white transition-colors" href="https://giaviet.edu.vn/" target="_blank">Website</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+        </main>
+    </div>
+</body>
+</html>

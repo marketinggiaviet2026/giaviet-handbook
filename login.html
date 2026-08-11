@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Đăng nhập - Gia Viet Handbook</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="picture/Logo.png">
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d59f2",
+                        "primary-dark": "#0a46c2",
+                        "background-light": "#f8f9fa",
+                        "background-dark": "#0f131a",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"],
+                        "body": ["Be Vietnam Pro", "sans-serif"],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <!-- Google Identity Services (Google Sign-In) SDK -->
+    <script src="https://accounts.google.com/gsi/client" onload="initGoogleSignIn()" async defer></script>
+</head>
+
+<body
+    class="bg-white dark:bg-background-dark text-[#0d121c] dark:text-white font-body min-h-screen flex overflow-hidden">
+
+    <!-- Left Side: Image / Branding (Hidden on small screens) -->
+    <div class="hidden lg:flex lg:w-1/2 relative bg-gray-900 overflow-hidden animate-fade-in">
+        <!-- Background Image -->
+        <img src="picture/gioi-thieu.jpg"
+            onerror="this.src='../picture/gioi-thieu.jpg'; this.onerror=function(){this.src='../../picture/gioi-thieu.jpg'};"
+            alt="Gia Viet Campus" class="absolute inset-0 w-full h-full object-cover opacity-80 mix-blend-overlay">
+
+        <!-- Gradient Overlay for better text readability and premium feel -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#00174f]/90 via-[#0d59f2]/40 to-transparent"></div>
+
+        <!-- Animated floating shapes -->
+        <div
+            class="absolute top-[20%] left-[10%] w-[400px] h-[400px] bg-primary/30 rounded-full blur-[120px] mix-blend-screen pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-[10%] right-[10%] w-[300px] h-[300px] bg-blue-300/20 rounded-full blur-[100px] mix-blend-screen pointer-events-none">
+        </div>
+
+        <!-- Content overlay -->
+        <div class="relative z-10 w-full flex flex-col justify-center p-16 h-full">
+            <span
+                class="text-white/80 font-bold tracking-[0.2em] uppercase text-sm mb-4 font-display flex items-center gap-2">
+                <span class="w-8 h-[2px] bg-white/60 block"></span>
+                GiaViet Handbook
+            </span>
+            <h2 class="text-white text-4xl md:text-5xl font-black leading-tight font-display mb-6">
+                Chất lượng <br /><span class="text-blue-300">Nhân văn</span> & <br />Phát triển toàn diện
+            </h2>
+            <p class="text-white/80 text-lg max-w-md font-light leading-relaxed">
+                Đồng hành cùng giáo viên trong hành trình mang đến tri thức và sự tự tin cho thế hệ tương lai.
+            </p>
+        </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div
+        class="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-white dark:bg-background-dark relative overflow-y-auto h-screen max-h-screen">
+
+        <!-- Decorative corner blobs for mobile & right side -->
+        <div
+            class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/3 pointer-events-none">
+        </div>
+
+        <div class="w-full max-w-md relative z-10 animate-slide-up my-auto py-8">
+
+            <!-- Logo -->
+            <div class="mb-8 flex justify-start">
+                <img src="picture/Logo.png"
+                    onerror="this.src='../picture/Logo.png'; this.onerror=function(){this.src='../../picture/Logo.png'};"
+                    alt="Gia Viet Logo" class="h-14 w-auto object-contain">
+            </div>
+
+            <!-- Headers -->
+            <div class="mb-6">
+                <h1 class="text-3xl font-black font-display text-[#0d121c] dark:text-white mb-3">Chào mừng trở lại!</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-base font-body">Vui lòng đăng nhập để truy cập Cẩm nang
+                    và Hệ thống nội bộ của Trung tâm.</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-message" class="hidden overflow-hidden transition-all duration-300 mb-6">
+                <div
+                    class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-medium p-4 rounded-xl border border-red-100 dark:border-red-800/30 flex items-center gap-3">
+                    <div class="bg-red-100 dark:bg-red-900/50 p-1.5 rounded-full text-red-600 dark:text-red-400">
+                        <span class="material-symbols-outlined text-sm block">close</span>
+                    </div>
+                    Tài khoản hoặc mật khẩu không chính xác.
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="loginForm" class="flex flex-col gap-6">
+
+                <div class="space-y-2">
+                    <label for="username" class="block text-sm font-bold text-[#1a202c] dark:text-gray-200">
+                        Tên đăng nhập
+                    </label>
+                    <div class="relative group">
+                        <span
+                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors z-10">person</span>
+                        <input type="text" id="username"
+                            class="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-transparent bg-gray-50 dark:bg-[#1a202c] focus:bg-white dark:focus:bg-[#1a202c] hover:bg-gray-100/80 focus:border-primary/20 focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-gray-900 dark:text-white"
+                            placeholder="VD: giaovien" required autofocus>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-sm font-bold text-[#1a202c] dark:text-gray-200">
+                            Mật khẩu
+                        </label>
+                        <a href="#"
+                            class="text-sm font-semibold text-primary hover:text-primary-dark transition-colors inline-block"
+                            onclick="alert('Vui lòng liên hệ bộ phận IT hoặc Phòng Đào tạo để cấp lại mật khẩu.'); return false;">Quên
+                            mật khẩu?</a>
+                    </div>
+                    <div class="relative group">
+                        <span
+                            class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors z-10">lock</span>
+                        <input type="password" id="password"
+                            class="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-transparent bg-gray-50 dark:bg-[#1a202c] focus:bg-white dark:focus:bg-[#1a202c] hover:bg-gray-100/80 focus:border-primary/20 focus:ring-4 focus:ring-primary/10 transition-all outline-none font-medium text-gray-900 dark:text-white"
+                            placeholder="Nhập mật khẩu" required>
+                    </div>
+                </div>
+
+                <!-- Remember me -->
+                <div class="flex items-center">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative flex items-center justify-center">
+                            <input type="checkbox" id="remember" class="peer sr-only">
+                            <div
+                                class="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 rounded peer-checked:bg-primary peer-checked:border-primary transition-colors group-hover:border-primary/50">
+                            </div>
+                            <span
+                                class="material-symbols-outlined absolute text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">check</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-600 dark:text-gray-400 select-none">Ghi nhớ đăng
+                            nhập</span>
+                    </label>
+                </div>
+
+                <button type="submit"
+                    class="group relative w-full flex justify-center items-center gap-2 py-4 px-6 border border-transparent text-base font-bold rounded-xl text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/30 transition-all overflow-hidden shadow-[0_8px_20px_-8px_rgba(13,89,242,0.6)] hover:shadow-[0_15px_25px_-8px_rgba(13,89,242,0.7)] mt-2">
+                    <span class="relative z-10 flex items-center gap-2">
+                        Tiếp tục
+                        <span
+                            class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </span>
+                    <div
+                        class="absolute inset-0 h-full w-full scale-0 rounded-xl transition-all duration-300 group-hover:scale-100 group-hover:bg-black/10">
+                    </div>
+                </button>
+            </form>
+
+            <!-- OR Divider -->
+            <div class="relative flex py-4 items-center">
+                <div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+                <span class="flex-shrink mx-4 text-gray-400 dark:text-gray-500 text-sm font-semibold select-none">Hoặc
+                    đăng nhập với</span>
+                <div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+
+            <!-- Google Sign-In Button Container -->
+            <div class="w-full flex justify-center">
+                <button onclick="loginGoogle()" type="button"
+                    class="w-full flex justify-center items-center gap-3 py-3.5 px-6 border border-gray-300 dark:border-gray-700 text-base font-bold rounded-xl text-gray-700 dark:text-gray-200 bg-white dark:bg-[#1a202c] hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all shadow-sm">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56,12.25c0,-0.78,-0.07,-1.53,-0.2,-2.25H12v4.26h5.92c-0.26,1.37,-1.04,2.53,-2.21,3.31v2.77h3.57C21.37,18.35,22.56,15.54,22.56,12.25z" fill="#4285F4" />
+                        <path d="M12,23c2.97,0,5.46,-0.98,7.28,-2.66l-3.57,-2.77c-0.98,0.66,-2.23,1.06,-3.71,1.06c-2.86,0,-5.29,-1.93,-6.16,-4.53H2.18v2.84C3.99,20.53,7.7,23,12,23z" fill="#34A853" />
+                        <path d="M5.84,14.09c-0.22,-0.66,-0.35,-1.36,-0.35,-2.09s0.13,-1.43,0.35,-2.09V7.06H2.18C1.43,8.55,1,10.22,1,12s0.43,3.45,1.18,4.94l3.66,-2.85z" fill="#FBBC05" />
+                        <path d="M12,5.38c1.62,0,3.06,0.56,4.21,1.64l3.15,-3.15C17.45,2.09,14.97,1,12,1C7.7,1,3.99,3.47,2.18,7.06l3.66,2.85c0.87,-2.6,3.3,-4.53,6.16,-4.53z" fill="#EA4335" />
+                    </svg>
+                    Login with Google
+                </button>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                    © 2026 Gia Viet English Language Center.
+                </p>
+                <div class="mt-2 flex justify-center gap-4 text-xs">
+                    <a href="gop-y-phan-hoi.html" class="text-gray-400 hover:text-primary transition-colors">Hỗ trợ</a>
+                    <span class="text-gray-300 dark:text-gray-700">•</span>
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">Chính sách bảo mật</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorElement = document.getElementById('error-message');
+            const submitBtn = document.querySelector('button[type="submit"]');
+
+            // Tài khoản mặc định & Tài khoản admin/admind mới
+            const isGiaoVien = (user === 'giaovien' && pass === 'giaviet2026');
+            const isAdmin = ((user === 'admin' || user === 'admind') && (pass === 'admin2026' || pass === 'giaviet2026'));
+
+            if (isGiaoVien || isAdmin) {
+                errorElement.classList.add('hidden');
+
+                // Loading state
+                const originalContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-base">progress_activity</span> <span class="ml-2">Đang xác thực...</span>';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-90', 'cursor-wait');
+
+                setTimeout(() => {
+                    localStorage.setItem('gv_auth_token', 'giaviet_v1');
+                    const urlParams = new URLSearchParams(window.location.search);
+                    let redirect = urlParams.get('redirect');
+                    if (!redirect) {
+                        const isLocal = window.location.protocol === 'file:';
+                        redirect = isLocal ? 'index.html' : '/';
+                    }
+                    window.location.href = redirect;
+                }, 800);
+            } else {
+                // Show error message elegantly
+                errorElement.classList.remove('hidden');
+
+                // Shake the inputs
+                const formGroup = document.getElementById('username').parentElement;
+                const formGroup2 = document.getElementById('password').parentElement;
+
+                [formGroup, formGroup2].forEach(el => {
+                    el.classList.add('border-red-400', 'animate-[shake_0.4s_ease-in-out]');
+                    setTimeout(() => el.classList.remove('animate-[shake_0.4s_ease-in-out]'), 400);
+                });
+            }
+        });
+
+        // Google Sign-In Callback
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfcJnixmnnJqlpFP_Fp_Ocp4VnPp-xBQV9WsJmzKbp7vLxmkEbE2vPNLTN4d6qCVJ2Fw/exec";
+
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwt(response.credential);
+            const email = responsePayload.email;
+            const errorElement = document.getElementById('error-message');
+            const submitBtn = document.querySelector('button[type="submit"]');
+
+            // Show loading
+            errorElement.classList.add('hidden');
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-base">progress_activity</span> <span class="ml-2">Đang xác thực...</span>';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-90', 'cursor-wait');
+
+            // Reset UI function
+            function resetUI(errorMessage) {
+                submitBtn.innerHTML = '<span class="relative z-10 flex items-center gap-2">Tiếp tục <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span></span>';
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-90', 'cursor-wait');
+
+                if (errorMessage) {
+                    errorElement.innerHTML = `
+                        <div class="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-medium p-4 rounded-xl border border-red-100 dark:border-red-800/30 flex items-center gap-3">
+                            <div class="bg-red-100 dark:bg-red-900/50 p-1.5 rounded-full text-red-600 dark:text-red-400">
+                                <span class="material-symbols-outlined text-sm block">close</span>
+                            </div>
+                            ${errorMessage}
+                        </div>
+                    `;
+                    errorElement.classList.remove('hidden');
+                }
+            }
+
+            // Call Google Apps Script Web App using Fetch
+            fetch(`${APPS_SCRIPT_URL}?email=${encodeURIComponent(email)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.allowed) {
+                        localStorage.setItem('gv_auth_token', 'giaviet_v1');
+                        localStorage.setItem('gv_user_email', email);
+                        localStorage.setItem('gv_user_name', responsePayload.name);
+                        localStorage.setItem('gv_user_picture', responsePayload.picture);
+                        localStorage.setItem('gv_user_contractType', data.contractType || '');
+
+                        const urlParams = new URLSearchParams(window.location.search);
+                        let redirect = urlParams.get('redirect');
+                        if (!redirect) {
+                            redirect = window.location.protocol === 'file:' ? 'index.html' : '/';
+                        }
+                        window.location.href = redirect;
+                    } else {
+                        resetUI("Email này chưa được cấp quyền truy cập. Vui lòng liên hệ bộ phận Nhân sự.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Apps Script API error:', error);
+                    resetUI("Lỗi kết nối. Vui lòng thử lại.");
+                });
+        }
+
+        function decodeJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+
+        // Initialize Google Sign-In SDK
+        function initGoogleSignIn() {
+            if (typeof google !== 'undefined' && document.getElementById("google-signin-btn")) {
+                google.accounts.id.initialize({
+                    client_id: "149446317570-r14gbthdirkmc7hqa7ngqgvnche6qofo.apps.googleusercontent.com", // Replace with your actual Google Client ID
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("google-signin-btn"),
+                    {
+                        theme: "outline",
+                        size: "large",
+                        width: 384,
+                        text: "signin_with",
+                        shape: "rectangular"
+                    }
+                );
+                google.accounts.id.prompt();
+            }
+        }
+
+        // Initialize as early as possible
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGoogleSignIn);
+        } else {
+            initGoogleSignIn();
+        }
+    </script>
+    <style>
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        /* Custom scrollbar to match sleek theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+    <!-- Firebase Google Login Bundle -->
+    <script src="login.dist.js"></script>
+</body>
+
+</html>

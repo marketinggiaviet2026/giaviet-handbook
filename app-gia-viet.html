@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <!-- Authentication Check -->
+    <script>
+        (function () {
+            if (localStorage.getItem('gv_auth_token') !== 'giaviet_v1') {
+                let isLocal = window.location.protocol === 'file:';
+                let loginPath = '/login.html';
+
+                if (isLocal) {
+                    let parts = window.location.pathname.split('/');
+                    let baseIndex = parts.indexOf('gia-viet-handbook');
+                    if (baseIndex !== -1) {
+                        let depth = parts.length - baseIndex - 2;
+                        loginPath = (depth > 0 ? '../'.repeat(depth) : './') + 'login.html';
+                    } else {
+                        loginPath = 'login.html';
+                    }
+                } else {
+                    // Check depth by counting slashes after root to handle subdirectories on Vercel
+                    let pathDepth = window.location.pathname.replace(/^\/|\/$/g, '').split('/').length;
+                    if (window.location.pathname === '/' || window.location.pathname === '') pathDepth = 0;
+
+                    if (pathDepth > 0 && !window.location.pathname.endsWith('.html')) {
+                        loginPath = '../'.repeat(pathDepth) + 'login.html';
+                    } else if (pathDepth > 1) {
+                        loginPath = '../'.repeat(pathDepth - 1) + 'login.html';
+                    } else {
+                        loginPath = '/login.html';
+                    }
+                }
+
+                const currentUrl = encodeURIComponent(isLocal ? window.location.href : window.location.pathname + window.location.search);
+                window.location.replace(loginPath + '?redirect=' + currentUrl);
+            }
+        })();
+    </script>
+
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>App Gia Việt - Handbook</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d59f2",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"], "body": ["Be Vietnam Pro", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* From Uiverse.io by Codecite */
+        .btn {
+            transition: all 0.3s ease-in-out;
+            font-family: "Dosis", "Montserrat", sans-serif;
+            width: 150px;
+            height: 60px;
+            border-radius: 50px;
+            background-color: #0d59f2;
+            box-shadow: 0 20px 30px -6px rgba(13, 89, 242, 0.5);
+            outline: none;
+            cursor: pointer;
+            border: none;
+            font-size: 18px;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
+
+        .btn:active {
+            opacity: 0.5;
+        }
+
+        /* From Uiverse.io by SteveBloX */
+        .card {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid white;
+            box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(6px);
+            border-radius: 17px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.5s;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            color: black;
+            user-select: none;
+        }
+
+        .card:hover {
+            border: 1px solid #0d59f2;
+            transform: scale(1.05);
+        }
+
+        .card:active {
+            transform: scale(0.95) rotateZ(1.7deg);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* From Uiverse.io by adamgiebl */
+        .custom-btn {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(13, 89, 242, 0.2);
+        }
+
+        .custom-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(13, 89, 242, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .custom-btn:hover::before {
+            left: 100%;
+        }
+
+        .custom-btn span {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#0d121c] dark:text-white font-body">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <header
+            class="w-full bg-white dark:bg-[#1a202c] border-b border-[#e7ebf4] dark:border-gray-700 sticky top-0 z-50">
+            <div class="w-full flex justify-center">
+                <div class="w-full max-w-[1280px] px-4 md:px-10 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2 flex-shrink-0 md:w-48">
+                        <img src="picture/Logo.png" alt="Gia Viet" class="h-10 w-auto object-contain">
+                    </div>
+                    <div
+                        class="hidden md:flex flex-1 items-center justify-start gap-4 xl:gap-6 whitespace-nowrap ml-8 mr-4">
+                        <a id="nav-trang-chu"
+                            class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap"
+                            href="index.html">Trang chủ</a>
+                        <a id="nav-ve-gia-viet"
+                            class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap"
+                            href="ve-gia-viet.html">Về Gia Việt</a>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-to-chuc"
+                                class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#" onclick="event.preventDefault()">
+                                Tổ chức & Nhân sự
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[360px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden">
+            <a href="quy-trinh-tiep-nhan-giao-vien-moi.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình tiếp nhận giáo viên mới</a>
+            <a href="quy-trinh-xin-ngung-cong-tac.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình giáo viên xin ngưng công tác</a>
+            <a href="quy-trinh-cham-cong-tinh-luong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình chấm công & tính lương giảng dạy</a>
+            <a href="nhan-su-phu-trach.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Nhân sự phụ trách - Liên hệ</a>
+            <a href="quy-dinh-tac-phong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Quy định về tác phong</a>
+        </div>
+                            </div>
+                        </div>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-chinh-sach"
+                                class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#" onclick="event.preventDefault()">
+                                Chính sách & Phúc lợi
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden">
+            <a href="che-do-luong-thuong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Chế độ lương - Thưởng</a>
+            <a href="dai-ngo-giao-vien.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Đãi ngộ Giáo viên Gia Việt</a>
+            <a href="chinh-sach-ho-tro-khac.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Chính sách hỗ trợ khác</a>
+        </div>
+                            </div>
+                        </div>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-dao-tao"
+                                class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#" onclick="event.preventDefault()">
+                                Đào tạo & Đảm bảo chất lượng
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[700px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-6 px-8 flex gap-8 relative overflow-hidden text-left whitespace-normal">
+                                    <div class="flex flex-col gap-6 flex-1">
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Chương trình Đào tạo</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="tieng-anh-thieu-nhi-thieu-nien.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Tiếng
+                                                        Anh Thiếu nhi - Thiếu niên</a></li>
+                                                <li><a href="#"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Tiếng
+                                                        Anh Người lớn</a></li>
+                                                <li><a href="flexi-time.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Flexi-time</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Chương trình chuyên biệt</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="chuong-trinh-chuyen-biet.html#ltp"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Learning
+                                                        Through Playing (LTP)</a></li>
+                                                <li><a href="chuong-trinh-chuyen-biet.html#elite-kids"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Elite
+                                                        Kids</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Đảm bảo chất lượng</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="du-gio-dong-nghiep.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Dự
+                                                        giờ đồng nghiệp (Peer-Observation)</a></li>
+                                                <li><a href="cpd.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Chương
+                                                        trình CPD</a></li>
+                                                <li><a href="chuong-trinh-cop.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Chương
+                                                        trình CoP</a></li>
+                                                <li><a href="fast-track-training.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Hỗ
+                                                        trợ Fast-Track Training</a></li>
+                                                <li><a href="mentoring-1-1.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Hỗ
+                                                        trợ Mentoring 1-1</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-6 flex-1">
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Quy định & Quy trình giảng dạy</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="giao-trinh-tai-lieu.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Giáo
+                                                        trình & Tài liệu giảng dạy</a></li>
+                                                <li><a href="quy-dinh-diem-danh.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định Điểm danh</a></li>
+                                                <li><a href="quy-trinh-giang-day.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        trình giảng dạy và khen thưởng</a></li>
+                                                <li><a href="quy-dinh-so-lien-lac.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định Sổ liên lạc</a></li>
+                                                <li><a href="quy-dinh-phu-dao.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định Phụ đạo (YLE)</a></li>
+                                                <li><a href="chinh-sach-hoc-bong.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định chính sách học bổng YLE</a></li>
+                                                <li><a href="quy-dinh-khao-thi.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        trình Khảo thí</a></li>
+                                                <li><a href="quy-dinh-nghi-phep.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định nghỉ phép</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-he-thong"
+                                class="text-primary text-sm font-bold border-b-2 border-primary pb-0.5 whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#">
+                                Hệ thống & Hỗ trợ
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full right-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden text-left">
+                                    <a href="app-gia-viet.html"
+                                        class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50 last:border-0">App
+                                        Gia Việt</a>
+                                    <a href="quy-dinh-in-an.html"
+                                        class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50 last:border-0">Quy
+                                        định in ấn & Hỗ trợ khác</a>
+                                    <a href="gop-y-phan-hoi.html"
+                                        class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Kênh
+                                        nhận góp ý & phản hồi</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <button onclick="localStorage.removeItem('gv_auth_token'); const currentUrl = encodeURIComponent(window.location.protocol === 'file:' ? window.location.href : window.location.pathname + window.location.search); window.location.href = (window.location.protocol === 'file:' ? 'login.html' : '/login.html') + '?redirect=' + currentUrl;"
+                            class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold tracking-[0.015em] ml-4">
+                            <span class="truncate">Đăng xuất</span>
+                        </button>
+                    </div>
+                    <div class="md:hidden text-[#0d121c] dark:text-white">
+                        <span class="material-symbols-outlined">menu</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex flex-col items-center w-full bg-slate-50 min-h-screen">
+            <!-- Breadcrumb & T<!-- Breadcrumb & Title Area -->
+            <div
+                class="w-full bg-white py-12 px-4 md:px-10 border-b border-gray-100 shadow-sm relative overflow-hidden">
+                <div
+                    class="absolute right-0 top-0 w-64 h-64 bg-blue-50/50 rounded-full translate-x-1/2 -translate-y-1/2 opacity-50">
+                </div>
+
+                <div class="w-full max-w-[1280px] mx-auto relative z-10 font-body">
+                    <h1 class="text-3xl md:text-4xl font-bold text-[#00174f] mb-6 font-display tracking-wide">App Gia
+                        Việt</h1>
+                    <div class="flex items-center gap-2 text-[15px] text-gray-500 font-body flex-wrap">
+                        <a href="index.html" class="flex items-center hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">home</span>
+                            <span class="ml-1">Trang chủ</span>
+                        </a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <a href="#" class="hover:text-primary transition-colors whitespace-nowrap">Hệ thống & Hỗ trợ</a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span> <span
+                            class="text-[#0d121c] whitespace-nowrap">App Gia Việt</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 Column Layout -->
+            <div class="w-full max-w-[1440px] px-4 md:px-10 py-16 mx-auto">
+                <div class="flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
+                    <!-- Left Column: Content -->
+                    <div class="w-full md:w-[70%] lg:w-[75%] font-body text-gray-800 leading-relaxed space-y-8">
+
+                        <!-- SECTION I: GIA VIỆT APP -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-100/50 p-6 md:p-10 space-y-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/20">
+                            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-2xl font-bold">phone_iphone</span>
+                                </div>
+                                <div>
+                                    <h2
+                                        class="text-2xl font-black font-display text-[#00174f] tracking-tight uppercase">
+                                        GIA VIỆT APP</h2>
+                                    <p class="text-xs text-gray-400 font-body mt-0.5">Ứng dụng dành riêng cho đội ngũ
+                                        giáo viên</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-8">
+                                <!-- 1. Mục đích sử dụng -->
+                                <div class="bg-[#fafbfc] rounded-2xl border border-gray-100 p-6 shadow-sm">
+                                    <h3 class="text-lg font-bold text-[#00174f] mb-4 flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                                        1. Mục đích sử dụng
+                                    </h3>
+                                    <p class="mb-4 text-sm text-gray-500">Gia Việt App là công cụ chính để giáo viên:
+                                    </p>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                                        <div
+                                            class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center gap-2 hover:border-primary/30 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-blue-500">calendar_month</span>
+                                            <span class="text-xs font-bold text-gray-800 leading-tight">Xem lịch giảng
+                                                dạy</span>
+                                        </div>
+                                        <div
+                                            class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center gap-2 hover:border-primary/30 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-amber-500">fact_check</span>
+                                            <span class="text-xs font-bold text-gray-800 leading-tight">Điểm danh buổi
+                                                dạy</span>
+                                        </div>
+                                        <div
+                                            class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center gap-2 hover:border-primary/30 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-emerald-500">edit_document</span>
+                                            <span class="text-xs font-bold text-gray-800 leading-tight">Nhập nội dung
+                                                giảng dạy</span>
+                                        </div>
+                                        <div
+                                            class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center gap-2 hover:border-primary/30 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-purple-500">payments</span>
+                                            <span class="text-xs font-bold text-gray-800 leading-tight">Theo dõi và xác
+                                                nhận bảng chấm công – lương</span>
+                                        </div>
+                                        <div
+                                            class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center gap-2 hover:border-primary/30 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-rose-500">notifications_active</span>
+                                            <span class="text-xs font-bold text-gray-800 leading-tight">Nhận thông báo
+                                                từ Trung tâm</span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="bg-blue-50/70 border-l-4 border-primary p-4 rounded-r-xl flex gap-3 items-start">
+                                        <span
+                                            class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">info</span>
+                                        <p class="text-xs font-bold text-blue-900 leading-normal">
+                                            Việc sử dụng App/HTQL đúng quy định là điều kiện bắt buộc để ghi nhận giờ
+                                            dạy và tính lương.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- 2. Đăng nhập -->
+                                <div class="bg-[#fafbfc] rounded-2xl border border-gray-100 p-6 shadow-sm">
+                                    <h3 class="text-lg font-bold text-[#00174f] mb-4 flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                                        2. Đăng nhập
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div
+                                            class="flex items-start gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-blue-50 text-primary flex items-center justify-center shrink-0 font-bold text-sm">
+                                                1
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-sm text-[#00174f] mb-1">Tải ứng dụng</h4>
+                                                <p class="text-xs text-gray-500 leading-relaxed">Tải ứng dụng Gia Việt
+                                                    App trên Android hoặc iOS.</p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex items-start gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-blue-50 text-primary flex items-center justify-center shrink-0 font-bold text-sm">
+                                                2
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-sm text-[#00174f] mb-1">Tài khoản liên kết
+                                                </h4>
+                                                <p class="text-xs text-gray-500 leading-relaxed">Tài khoản đăng nhập
+                                                    dùng chung với tài khoản HTQL (do Trung tâm cấp).</p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex items-start gap-3 p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center shrink-0 font-bold text-sm">
+                                                <span class="material-symbols-outlined text-[16px]">security</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-sm text-[#00174f] mb-1">Bảo mật</h4>
+                                                <p class="text-xs text-gray-500 leading-relaxed">Giáo viên chịu trách
+                                                    nhiệm bảo mật thông tin đăng nhập.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Các thao tác giáo viên cần thực hiện thường xuyên -->
+                                <div class="bg-[#fafbfc] rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4">
+                                    <h3 class="text-lg font-bold text-[#00174f] mb-4 flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                                        3. Các thao tác giáo viên cần thực hiện thường xuyên
+                                    </h3>
+
+                                    <div class="space-y-4">
+                                        <!-- Xem lịch giảng dạy -->
+                                        <div
+                                            class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                                                <span
+                                                    class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h4 class="font-bold text-sm text-gray-900 mb-1">Xem lịch giảng dạy</h4>
+                                                <div class="flex flex-wrap gap-2">
+                                                    <span
+                                                        class="text-xs bg-slate-50 border border-gray-200 text-gray-600 px-2.5 py-1 rounded-md font-medium">Tab:
+                                                        Teacher → Schedule</span>
+                                                    <span
+                                                        class="text-xs bg-slate-50 border border-gray-200 text-gray-600 px-2.5 py-1 rounded-md font-medium">Kiểm
+                                                        tra đúng: lớp – ngày – giờ – chi nhánh</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Điểm danh buổi dạy -->
+                                        <div
+                                            class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm flex flex-col gap-3 transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                                            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                                                    <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <h4 class="font-bold text-sm text-gray-900 mb-1 flex items-center flex-wrap gap-1.5">
+                                                        Điểm danh buổi dạy
+                                                        <span class="bg-rose-50 text-rose-600 px-1.5 py-0.5 rounded text-[11px] font-black border border-rose-100 uppercase tracking-wider">RẤT QUAN TRỌNG</span>
+                                                    </h4>
+                                                    <p class="text-xs text-gray-500">Chọn buổi dạy trong Schedule và
+                                                        thực hiện:</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pl-0 md:pl-14">
+                                                <div
+                                                    class="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-gray-100">
+                                                    <span
+                                                        class="material-symbols-outlined text-amber-500 text-sm">check_circle</span>
+                                                    <span class="text-xs font-semibold text-gray-700">Present / Absent
+                                                        từng học viên</span>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-gray-100">
+                                                    <span
+                                                        class="material-symbols-outlined text-amber-500 text-sm">edit_note</span>
+                                                    <span class="text-xs font-semibold text-gray-700">Nhập nội dung
+                                                        giảng dạy</span>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-gray-100">
+                                                    <span
+                                                        class="material-symbols-outlined text-amber-500 text-sm">save</span>
+                                                    <span class="text-xs font-semibold text-gray-700">Save your teaching
+                                                        content</span>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="bg-red-50/70 border-l-4 border-red-500 p-3.5 rounded-r-lg flex gap-2.5 items-start md:ml-14">
+                                                <span
+                                                    class="material-symbols-outlined text-red-500 text-[18px] shrink-0 mt-0.5">warning</span>
+                                                <p class="text-xs font-bold text-red-800 leading-normal">
+                                                    Buổi dạy không được điểm danh sẽ không được ghi nhận chấm công và
+                                                    tính lương.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Xem & xác nhận bảng chấm công -->
+                                        <div
+                                            class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm flex flex-col gap-3 transition-all duration-300 hover:border-primary/30 hover:shadow-md">
+                                            <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                                    <span
+                                                        class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+                                                </div>
+                                                <div class="flex-1">
+                                                    <h4 class="font-bold text-sm text-gray-900 mb-1">Xem & xác nhận bảng
+                                                        chấm công – lương</h4>
+                                                    <p class="text-xs text-gray-500">Thực hiện các bước kiểm tra định
+                                                        kỳ:</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pl-0 md:pl-14">
+                                                <div
+                                                    class="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-gray-100">
+                                                    <span
+                                                        class="material-symbols-outlined text-emerald-500 text-sm">visibility</span>
+                                                    <span class="text-xs font-semibold text-gray-700">Vào Teacher →
+                                                        Timekeeping</span>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-gray-100">
+                                                    <span
+                                                        class="material-symbols-outlined text-emerald-500 text-sm">history_toggle_off</span>
+                                                    <span class="text-xs font-semibold text-gray-700">Kiểm tra số buổi,
+                                                        số giờ</span>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-2 p-2.5 bg-slate-50 rounded-lg border border-gray-100">
+                                                    <span
+                                                        class="material-symbols-outlined text-emerald-500 text-sm">verified</span>
+                                                    <span class="text-xs font-semibold text-gray-700">Xác nhận theo
+                                                        thông báo HR</span>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="bg-red-50/70 border-l-4 border-red-500 p-3.5 rounded-r-lg flex gap-2.5 items-start md:ml-14">
+                                                <span
+                                                    class="material-symbols-outlined text-red-500 text-[18px] shrink-0 mt-0.5">error</span>
+                                                <p class="text-xs font-bold text-red-800 leading-normal">
+                                                    Không xác nhận đúng hạn → không được chi trả lương trong đợt đó.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Thông báo -->
+                                <div class="bg-[#fafbfc] rounded-2xl border border-gray-100 p-6 shadow-sm">
+                                    <h3 class="text-lg font-bold text-[#00174f] mb-4 flex items-center gap-2">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                                        4. Thông báo
+                                    </h3>
+                                    <p class="mb-3 text-sm text-gray-500">Vào tab Thông báo để theo dõi định kỳ các
+                                        thông tin quan trọng:</p>
+
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        <div
+                                            class="flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-primary/20 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-blue-500 text-sm">calendar_month</span>
+                                            <span class="text-xs font-semibold text-gray-700">Lịch dạy</span>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-primary/20 transition-all duration-300">
+                                            <span class="material-symbols-outlined text-blue-500 text-sm">groups</span>
+                                            <span class="text-xs font-semibold text-gray-700">Training – workshop</span>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-primary/20 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-blue-500 text-sm">currency_exchange</span>
+                                            <span class="text-xs font-semibold text-gray-700">Chấm công – lương</span>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-100 shadow-sm hover:border-primary/20 transition-all duration-300">
+                                            <span
+                                                class="material-symbols-outlined text-blue-500 text-sm">campaign</span>
+                                            <span class="text-xs font-semibold text-gray-700">Thông báo nội bộ
+                                                khác</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION II: MỤC NHẬP SỔ LIÊN LẠC TRÊN HTQL -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-100/50 p-6 md:p-10 space-y-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/20">
+                            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-2xl font-bold">app_registration</span>
+                                </div>
+                                <div>
+                                    <h2
+                                        class="text-2xl font-black font-display text-[#00174f] tracking-tight uppercase">
+                                        MỤC NHẬP SỔ LIÊN LẠC TRÊN HTQL</h2>
+                                    <p class="text-xs text-gray-400 font-body mt-0.5">Hệ thống Quản lý học tập và thông
+                                        tin của Trung tâm</p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="bg-indigo-50/70 border-l-4 border-indigo-500 p-4 rounded-r-xl flex gap-3 items-start mb-6">
+                                <span
+                                    class="material-symbols-outlined text-indigo-500 text-[20px] shrink-0 mt-0.5">info</span>
+                                <p class="text-xs font-bold text-indigo-900 leading-normal">
+                                    Sổ liên lạc trên HTQL chỉ áp dụng cho giáo viên YLE.
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- 1. Đăng nhập HTQL -->
+                                <div
+                                    class="bg-[#fafbfc] rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between transition-all duration-300 hover:border-indigo-300 hover:shadow-md">
+                                    <div>
+                                        <h3 class="text-md font-bold text-[#00174f] mb-4 flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                                            1. Đăng nhập HTQL
+                                        </h3>
+                                        <ul class="space-y-3">
+                                            <li class="flex items-start gap-2.5">
+                                                <span
+                                                    class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">arrow_forward</span>
+                                                <span class="text-xs text-gray-600 font-medium">Truy cập cổng HTQL: <a
+                                                        href="http://htql.giaviet.edu.vn" target="_blank"
+                                                        class="text-primary hover:underline font-bold">http://htql.giaviet.edu.vn</a></span>
+                                            </li>
+                                            <li class="flex items-start gap-2.5">
+                                                <span
+                                                    class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">arrow_forward</span>
+                                                <span class="text-xs text-gray-600 font-medium">Đăng nhập bằng tài khoản
+                                                    do Trung tâm cấp.</span>
+                                            </li>
+                                            <li class="flex items-start gap-2.5">
+                                                <span
+                                                    class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">arrow_forward</span>
+                                                <span class="text-xs text-gray-600 font-medium">Lần đăng nhập đầu tiên:
+                                                    đổi mật khẩu để bảo mật.</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- 2. Nhập Sổ liên lạc học viên -->
+                                <div
+                                    class="bg-[#fafbfc] rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between transition-all duration-300 hover:border-indigo-300 hover:shadow-md">
+                                    <div>
+                                        <h3 class="text-md font-bold text-[#00174f] mb-4 flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                                            2. Nhập Sổ liên lạc học viên (YLE)
+                                        </h3>
+                                        <ul class="space-y-3">
+                                            <li class="flex items-start gap-2.5">
+                                                <span
+                                                    class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">check_circle</span>
+                                                <span class="text-xs text-gray-600 font-medium">Vào mục SỔ LIÊN LẠC trên
+                                                    menu.</span>
+                                            </li>
+                                            <li class="flex items-start gap-2.5">
+                                                <span
+                                                    class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">check_circle</span>
+                                                <span class="text-xs text-gray-600 font-medium">Chọn lớp được phân công
+                                                    phụ trách và đúng đợt nhận xét.</span>
+                                            </li>
+                                            <li class="flex items-start gap-2.5">
+                                                <span
+                                                    class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">check_circle</span>
+                                                <span class="text-xs text-gray-600 font-medium">Nhập nhận xét chi tiết
+                                                    từng bé và ấn Cập nhật để hoàn thành.</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 border border-gray-150 p-4 rounded-xl flex gap-3 items-start mt-4">
+                                <span
+                                    class="material-symbols-outlined text-gray-400 text-[20px] shrink-0 mt-0.5">assignment</span>
+                                <p class="text-xs font-semibold text-gray-500 leading-relaxed">
+                                    Giáo viên YLE có trách nhiệm hoàn thành việc nhập Sổ liên lạc đúng thời hạn, làm căn
+                                    cứ cho việc theo dõi học tập của học viên và ghi nhận hỗ trợ/thù lao theo quy định.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- SECTION III: CÁC KÊNH LIÊN LẠC -->
+                        <div
+                            class="bg-white rounded-2xl shadow-sm border border-gray-100/50 p-6 md:p-10 space-y-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/20">
+                            <div class="flex items-center gap-3 border-b border-gray-100 pb-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-2xl font-bold">qr_code_2</span>
+                                </div>
+                                <div>
+                                    <h2
+                                        class="text-2xl font-black font-display text-[#00174f] tracking-tight uppercase">
+                                        CÁC KÊNH LIÊN LẠC</h2>
+                                    <p class="text-xs text-gray-400 font-body mt-0.5">Quét QR Code hoặc truy cập để liên
+                                        hệ các phòng ban hỗ trợ</p>
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-gray-500">Gia Việt sử dụng các kênh Zalo phục vụ công việc, bao gồm
+                                các Mã QR kết nối trực tiếp:</p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <!-- Channel 1 -->
+                                <div
+                                    class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col items-center text-center shadow-sm hover:border-emerald-300 hover:shadow-md transition-all duration-300">
+                                    <h4 class="font-bold text-sm text-[#00174f] mb-4">Zalo Quầy tư vấn 1</h4>
+                                    <div class="h-44 flex items-center justify-center mb-4">
+                                        <img src="picture/qr-tu-van-1.jpg" alt="Zalo Quầy tư vấn 1 QR Code" class="h-full w-auto object-contain rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer">
+                                    </div>
+                                    <a href="https://zalo.me/0962460077" target="_blank"
+                                        class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100/90 px-4 py-2.5 rounded-full transition-all border border-emerald-100/60 shadow-sm">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">chat</span>
+                                        0962 460 077
+                                    </a>
+                                </div>
+
+                                <!-- Channel 2 -->
+                                <div
+                                    class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col items-center text-center shadow-sm hover:border-emerald-300 hover:shadow-md transition-all duration-300">
+                                    <h4 class="font-bold text-sm text-[#00174f] mb-4">Zalo Quầy tư vấn 2</h4>
+                                    <div class="h-44 flex items-center justify-center mb-4">
+                                        <img src="picture/qr-tu-van-2.jpg" alt="Zalo Quầy tư vấn 2 QR Code" class="h-full w-auto object-contain rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer">
+                                    </div>
+                                    <a href="https://zalo.me/0967883300" target="_blank"
+                                        class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100/90 px-4 py-2.5 rounded-full transition-all border border-emerald-100/60 shadow-sm">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">chat</span>
+                                        0967 883 300
+                                    </a>
+                                </div>
+
+                                <!-- Channel 3 -->
+                                <div
+                                    class="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col items-center text-center shadow-sm hover:border-emerald-300 hover:shadow-md transition-all duration-300">
+                                    <h4 class="font-bold text-sm text-[#00174f] mb-4">Zalo Tổ Thiết bị</h4>
+                                    <div class="h-44 flex items-center justify-center mb-4">
+                                        <img src="picture/qr-thiet-bi.jpg" alt="Zalo Tổ Thiết bị QR Code" class="h-full w-auto object-contain rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer">
+                                    </div>
+                                    <a href="https://zalo.me/0866668949" target="_blank"
+                                        class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100/90 px-4 py-2.5 rounded-full transition-all border border-emerald-100/60 shadow-sm">
+                                        <span class="material-symbols-outlined text-[15px] font-bold">chat</span>
+                                        0866 668 949
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="w-full md:w-[30%] lg:w-[25%] flex flex-col gap-10 mb-8 md:mb-0 sticky top-32 self-start">
+                        <div>
+                            <h3 class="text-[#00174f] text-2xl font-bold font-display mb-6 tracking-tight">Danh mục bài
+                                viết</h3>
+                            <ul class="flex flex-col gap-5 font-body text-[16px] font-bold text-[#00174f]">
+                                <li><a href="ve-gia-viet.html"
+                                        class="hover:text-primary transition-colors flex items-center group">Về Gia
+                                        Việt</a></li>
+                                <li class="flex flex-col gap-3">
+                                    <a href="#" onclick="event.preventDefault()"
+                                        class="hover:text-primary transition-colors flex items-center group">Tổ chức &
+                                        Nhân sự</a>
+                                    <ul
+                                        class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                        <li><a href="quy-trinh-tiep-nhan-giao-vien-moi.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình tiếp nhận giáo viên mới</a></li>
+                                        <li><a href="quy-trinh-xin-ngung-cong-tac.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình giáo viên xin ngưng công tác</a></li>
+                                        <li><a href="quy-trinh-cham-cong-tinh-luong.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình chấm công & tính lương giảng dạy</a></li>
+                                        <li><a href="nhan-su-phu-trach.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Nhân sự phụ trách - Liên hệ</a></li>
+                                        <li><a href="quy-dinh-tac-phong.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định về tác phong</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors flex items-center group">Đào
+                                        tạo & Đảm bảo chất lượng</a></li>
+                                <li class="flex flex-col gap-3">
+                                    <a href="#"
+                                        class="hover:text-primary transition-colors flex items-center group font-medium text-[#00174f]">Hệ
+                                        thống & Hỗ trợ</a>
+                                    <ul
+                                        class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                        <li><a href="app-gia-viet.html"
+                                                class="text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary before:mr-2">App
+                                                Gia Việt</a></li>
+                                        <li><a href="quy-dinh-in-an.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy
+                                                định in ấn & Hỗ trợ khác</a></li>
+                                        <li><a href="gop-y-phan-hoi.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Kênh
+                                                nhận góp ý & phản hồi</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-[#00174f] text-xl font-bold font-display mb-6 tracking-tight mt-4">Bài viết
+                                liên quan</h3>
+                            <p class="text-sm text-gray-400 font-body">Đang cập nhật...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="w-full bg-[#0d59f2] text-white py-12">
+<div class="w-full flex justify-center">
+<div class="w-full max-w-[1280px] px-4 md:px-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-8 w-full">
+<div class="lg:col-span-4">
+<div class="flex items-center gap-2 mb-4">
+<h3 class="text-xl font-bold font-display whitespace-nowrap">Gia Viet English Language Center</h3>
+</div>
+<p class="text-blue-100 text-sm leading-relaxed font-body">
+                                    Tiếng Anh và sự tự tin vươn ra thế giới.
+                                </p>
+</div>
+<div class="lg:col-span-2">
+<h4 class="font-bold text-lg mb-4 font-display">Về chúng tôi</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li><a class="hover:text-white transition-colors" href="ve-gia-viet.html">Về Gia Việt</a></li>
+<li><a class="hover:text-white transition-colors" href="quy-dinh-tac-phong.html">Quy định tác phong</a></li>
+<li><a class="hover:text-white transition-colors" href="che-do-luong-thuong.html">Chế độ lương - Thưởng</a></li>
+<li><a class="hover:text-white transition-colors" href="dai-ngo-giao-vien.html">Đãi ngộ giáo viên</a></li>
+</ul>
+</div>
+<div class="lg:col-span-3">
+                                <h4 class="font-bold text-lg mb-4 font-display">Chương trình đào tạo</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li><a class="hover:text-white transition-colors" href="tieng-anh-thieu-nhi-thieu-nien.html">Tiếng Anh Thiếu nhi - Thiếu niên</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Tiếng Anh Người lớn</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Flexi-time English Program</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Elite Kids Program</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Liên kết đào tạo</a></li>
+</ul>
+</div>
+<div class="lg:col-span-3">
+                                <h4 class="font-bold text-lg mb-4 font-display">Liên hệ</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm mt-0.5">location_on</span>
+<span>Trụ sở chính: Số 39, Đường Mậu Thân, Phường Ninh Kiều, Thành phố Cần Thơ</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>0292 383 1000</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@giaviet.edu.vn</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="border-t border-blue-400/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-blue-200 text-sm font-body">© 2026 Gia Viet English Center. All rights reserved.</p>
+<div class="flex gap-4 font-body">
+<a class="text-blue-200 hover:text-white transition-colors" href="https://www.facebook.com/giavietcenter" target="_blank">Facebook</a>
+<a class="text-blue-200 hover:text-white transition-colors" href="https://youtube.com/@trungtamanhngugiaviet?si=iZlHr2h5nTGlV0TS" target="_blank">Youtube</a>
+<a class="text-blue-200 hover:text-white transition-colors" href="https://giaviet.edu.vn/" target="_blank">Website</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+        </main>
+    </div>
+    <script>
+        function toggleAccordion(element) {
+            const content = element.querySelector('.card-content');
+            const icon = element.querySelector('.toggle-icon');
+            const isHidden = content.classList.contains('hidden');
+
+            // Close all
+            document.querySelectorAll('.card-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.toggle-icon').forEach(el => el.classList.remove('rotate-180', 'text-primary'));
+            document.querySelectorAll('.card').forEach(el => el.classList.remove('border-primary', 'shadow-md'));
+
+            if (isHidden) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180', 'text-primary');
+                element.classList.add('border-primary', 'shadow-md');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <!-- Authentication Check -->
+    <script>
+        (function () {
+            if (localStorage.getItem('gv_auth_token') !== 'giaviet_v1') {
+                let isLocal = window.location.protocol === 'file:';
+                let loginPath = '/login.html';
+
+                if (isLocal) {
+                    let parts = window.location.pathname.split('/');
+                    let baseIndex = parts.indexOf('gia-viet-handbook');
+                    if (baseIndex !== -1) {
+                        let depth = parts.length - baseIndex - 2;
+                        loginPath = (depth > 0 ? '../'.repeat(depth) : './') + 'login.html';
+                    } else {
+                        loginPath = 'login.html';
+                    }
+                } else {
+                    // Check depth by counting slashes after root to handle subdirectories on Vercel
+                    let pathDepth = window.location.pathname.replace(/^\/|\/$/g, '').split('/').length;
+                    if (window.location.pathname === '/' || window.location.pathname === '') pathDepth = 0;
+
+                    if (pathDepth > 0 && !window.location.pathname.endsWith('.html')) {
+                        loginPath = '../'.repeat(pathDepth) + 'login.html';
+                    } else if (pathDepth > 1) {
+                        loginPath = '../'.repeat(pathDepth - 1) + 'login.html';
+                    } else {
+                        loginPath = '/login.html';
+                    }
+                }
+
+                const currentUrl = encodeURIComponent(isLocal ? window.location.href : window.location.pathname + window.location.search);
+                window.location.replace(loginPath + '?redirect=' + currentUrl);
+            }
+        })();
+    </script>
+
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Nhân sự phụ trách & Liên hệ - Handbook</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0d59f2",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Montserrat", "sans-serif"], "body": ["Be Vietnam Pro", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <!-- Vercel Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#0d121c] dark:text-white font-body">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <header
+            class="w-full bg-white dark:bg-[#1a202c] border-b border-[#e7ebf4] dark:border-gray-700 sticky top-0 z-50">
+            <div class="w-full flex justify-center">
+                <div class="w-full max-w-[1280px] px-4 md:px-10 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2 flex-shrink-0 md:w-48">
+                        <img src="picture/Logo.png" alt="Gia Viet" class="h-10 w-auto object-contain">
+                    </div>
+                    <div
+                        class="hidden md:flex flex-1 items-center justify-start gap-4 xl:gap-6 whitespace-nowrap ml-8 mr-4">
+                        <a id="nav-trang-chu"
+                            class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap"
+                            href="index.html">Trang chủ</a>
+                        <a id="nav-ve-gia-viet"
+                            class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap"
+                            href="ve-gia-viet.html">Về Gia Việt</a>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-to-chuc"
+                                class="text-primary text-sm font-bold border-b-2 border-primary pb-0.5 whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#" onclick="event.preventDefault()">
+                                Tổ chức & Nhân sự
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[360px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden">
+            <a href="quy-trinh-tiep-nhan-giao-vien-moi.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình tiếp nhận giáo viên mới</a>
+            <a href="quy-trinh-xin-ngung-cong-tac.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình giáo viên xin ngưng công tác</a>
+            <a href="quy-trinh-cham-cong-tinh-luong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Quy trình chấm công & tính lương giảng dạy</a>
+            <a href="nhan-su-phu-trach.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Nhân sự phụ trách - Liên hệ</a>
+            <a href="quy-dinh-tac-phong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Quy định về tác phong</a>
+        </div>
+                            </div>
+                        </div>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-chinh-sach"
+                                class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#" onclick="event.preventDefault()">
+                                Chính sách & Phúc lợi
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden">
+            <a href="che-do-luong-thuong.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Chế độ lương - Thưởng</a>
+            <a href="dai-ngo-giao-vien.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50">Đãi ngộ Giáo viên Gia Việt</a>
+            <a href="chinh-sach-ho-tro-khac.html" class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Chính sách hỗ trợ khác</a>
+        </div>
+                            </div>
+                        </div>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-dao-tao"
+                                class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#" onclick="event.preventDefault()">
+                                Đào tạo & Đảm bảo chất lượng
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[700px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-50">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-6 px-8 flex gap-8 relative overflow-hidden text-left whitespace-normal">
+                                    <div class="flex flex-col gap-6 flex-1">
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Chương trình Đào tạo</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="tieng-anh-thieu-nhi-thieu-nien.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Tiếng
+                                                        Anh Thiếu nhi - Thiếu niên</a></li>
+                                                <li><a href="#"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Tiếng
+                                                        Anh Người lớn</a></li>
+                                                <li><a href="flexi-time.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Flexi-time</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Chương trình chuyên biệt</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="chuong-trinh-chuyen-biet.html#ltp"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Learning
+                                                        Through Playing (LTP)</a></li>
+                                                <li><a href="chuong-trinh-chuyen-biet.html#elite-kids"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Elite
+                                                        Kids</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Đảm bảo chất lượng</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="du-gio-dong-nghiep.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Dự
+                                                        giờ đồng nghiệp (Peer-Observation)</a></li>
+                                                <li><a href="cpd.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Chương
+                                                        trình CPD</a></li>
+                                                <li><a href="chuong-trinh-cop.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Chương
+                                                        trình CoP</a></li>
+                                                <li><a href="fast-track-training.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Hỗ
+                                                        trợ Fast-Track Training</a></li>
+                                                <li><a href="mentoring-1-1.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Hỗ
+                                                        trợ Mentoring 1-1</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-6 flex-1">
+                                        <div>
+                                            <h4
+                                                class="text-[#00174f] dark:text-gray-100 text-base font-bold font-display mb-3 border-b border-gray-100 dark:border-gray-700 pb-2">
+                                                Quy định & Quy trình giảng dạy</h4>
+                                            <ul class="flex flex-col gap-2.5">
+                                                <li><a href="giao-trinh-tai-lieu.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Giáo
+                                                        trình & Tài liệu giảng dạy</a></li>
+                                                <li><a href="quy-dinh-diem-danh.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định Điểm danh</a></li>
+                                                <li><a href="quy-trinh-giang-day.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        trình giảng dạy và khen thưởng</a></li>
+                                                <li><a href="quy-dinh-so-lien-lac.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định Sổ liên lạc</a></li>
+                                                <li><a href="quy-dinh-phu-dao.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định Phụ đạo (YLE)</a></li>
+                                                <li><a href="chinh-sach-hoc-bong.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định chính sách học bổng YLE</a></li>
+                                                <li><a href="quy-dinh-khao-thi.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        trình Khảo thí</a></li>
+                                                <li><a href="quy-dinh-nghi-phep.html"
+                                                        class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">Quy
+                                                        định nghỉ phép</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative group py-2 flex items-center">
+                            <a id="nav-he-thong"
+                                class="text-[#0d121c] dark:text-gray-300 text-sm font-medium hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer"
+                                href="#">
+                                Hệ thống & Hỗ trợ
+                                <span
+                                    class="material-symbols-outlined text-sm transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div
+                                class="absolute top-full right-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top translate-y-2 group-hover:translate-y-0 z-[100]">
+                                <div
+                                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 dark:border-gray-700 py-2 flex flex-col relative overflow-hidden text-left">
+                                    <a href="app-gia-viet.html"
+                                        class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50 last:border-0">App
+                                        Gia Việt</a>
+                                    <a href="quy-dinh-in-an.html"
+                                        class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium border-b border-gray-50 dark:border-gray-700/50 last:border-0">Quy
+                                        định in ấn & Hỗ trợ khác</a>
+                                    <a href="gop-y-phan-hoi.html"
+                                        class="px-5 py-3 text-sm text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-[#f8fbff] dark:hover:bg-slate-800 transition-colors font-medium">Kênh
+                                        nhận góp ý & phản hồi</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <button onclick="localStorage.removeItem('gv_auth_token'); const currentUrl = encodeURIComponent(window.location.protocol === 'file:' ? window.location.href : window.location.pathname + window.location.search); window.location.href = (window.location.protocol === 'file:' ? 'login.html' : '/login.html') + '?redirect=' + currentUrl;"
+                            class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold tracking-[0.015em] ml-4">
+                            <span class="truncate">Đăng xuất</span>
+                        </button>
+                    </div>
+                    <div class="md:hidden text-[#0d121c] dark:text-white">
+                        <span class="material-symbols-outlined">menu</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex flex-col items-center w-full bg-slate-50 min-h-screen">
+            <!-- Breadcrumb & Title Area -->
+            <div
+                class="w-full bg-white py-12 px-4 md:px-10 border-b border-gray-100 shadow-sm relative overflow-hidden">
+                <div
+                    class="absolute right-0 top-0 w-64 h-64 bg-blue-50/50 rounded-full translate-x-1/2 -translate-y-1/2 opacity-50">
+                </div>
+                <div class="absolute right-0 top-0 w-32 h-32 text-blue-100 translate-x-1/4 -translate-y-1/4 opacity-30"
+                    style="background-image: radial-gradient(#0d59f2 2px, transparent 2px); background-size: 16px 16px;">
+                </div>
+
+                <div class="w-full max-w-[1280px] mx-auto relative z-10 font-body">
+                    <h1 class="text-3xl md:text-4xl font-bold text-[#00174f] mb-6 font-display tracking-wide">Nhân sự phụ trách & Liên hệ</h1>
+                    <div class="flex items-center gap-2 text-[15px] text-gray-500 font-body">
+                        <a href="index.html" class="flex items-center hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">home</span>
+                            <span class="ml-1">Trang chủ</span>
+                        </a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors">Tổ chức & Nhân sự</a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <span class="text-[#0d121c]">Nhân sự phụ trách - Liên hệ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 Column Layout -->
+            <div class="w-full max-w-[1440px] px-4 md:px-10 py-16 mx-auto">
+                <div class="flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
+
+                    <!-- Left Column: Content -->
+                    <div class="w-full md:w-[70%] lg:w-[75%] font-body text-gray-800 leading-relaxed space-y-8">
+
+                        <!-- Redesigned High-End Banner -->
+                        <div
+                            class="w-full h-[240px] bg-gradient-to-br from-[#00174f] via-[#0537a1] to-[#0d59f2] relative flex items-center justify-center p-8 overflow-hidden z-0 rounded-2xl shadow-md border border-blue-900/10">
+                            <!-- Premium Radial Light Overlay -->
+                            <div
+                                class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]">
+                            </div>
+
+                            <!-- Pure CSS Elegant Geometric Glassmorphic Shapes -->
+                            <div class="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-white/5 blur-2xl"></div>
+                            <div class="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-white/10 blur-3xl">
+                            </div>
+
+                            <div class="relative z-10 flex flex-col items-center text-center">
+                                <h2
+                                    class="text-white text-2xl md:text-3xl font-black font-display tracking-tight leading-tight px-4 max-w-3xl uppercase">
+                                    Nhân sự phụ trách & Liên hệ
+                                </h2>
+                            </div>
+                        </div>
+
+                        <!-- BAN GIÁM ĐỐC -->
+                        <div class="border-b border-gray-200 pb-2 mb-6">
+                            <h2 class="text-xl font-bold font-display text-[#00174f] uppercase tracking-wide flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[22px]">admin_panel_settings</span>
+                                Ban Giám Đốc
+                            </h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Card: Nguyễn Hải Quân -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-lg text-[#00174f] tracking-tight leading-tight">Nguyễn Hải Quân (Mr)</h3>
+                                        <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                            Quản lý chung & Cố vấn chuyên môn – Hợp tác quốc tế
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Tư vấn chiến lược</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phát triển chương trình</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Mở rộng hợp tác</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Đảm bảo chất lượng đào tạo</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="space-y-2">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="tel:0939988747" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                                <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                                <span>093 9988 747</span>
+                                            </a>
+                                            <a href="mailto:quan.nguyenhai1979@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                                <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                                <span>quan.nguyenhai1979@gmail.com</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHÒNG CHUYÊN MÔN -->
+                        <div class="border-b border-gray-200 pb-2 mb-6 mt-10">
+                            <h2 class="text-xl font-bold font-display text-[#00174f] uppercase tracking-wide flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[22px]">workspace_premium</span>
+                                Phòng Chuyên Môn
+                            </h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card: Nguyễn Hải Quân (Chuyên môn) -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Nguyễn Hải Quân (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng quản lý chương trình TA dành cho người lớn
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý chuyên môn</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phát triển chương trình</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Đào tạo</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Dự giờ</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Đảm bảo chất lượng</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0939988747" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>093 9988 747</span>
+                                        </a>
+                                        <a href="mailto:quan.nguyenhai1979@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>quan.nguyenhai1979@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Nguyễn Hoàng Phúc -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Nguyễn Hoàng Phúc (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng quản lý chương trình TA dành cho thiếu nhi và thiếu niên
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0354367827" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0354 367 827</span>
+                                        </a>
+                                        <a href="mailto:phuc116634@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>phuc116634@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Hoàng Kim Yến -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Hoàng Kim Yến (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng quản lý chương trình TA ngoài Gia Việt
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0985700422" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0985 700 422</span>
+                                        </a>
+                                        <a href="mailto:hoangkimyen0309@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>hoangkimyen0309@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHÒNG ĐÀO TẠO -->
+                        <div class="border-b border-gray-200 pb-2 mb-6 mt-10">
+                            <h2 class="text-xl font-bold font-display text-[#00174f] uppercase tracking-wide flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[22px]">auto_stories</span>
+                                Phòng Đào Tạo
+                            </h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card: Nguyễn Hải Quân (Đào tạo) -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Nguyễn Hải Quân (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Trưởng phòng
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Điều phối chung hoạt động đào tạo</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0939988747" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>093 9988 747</span>
+                                        </a>
+                                        <a href="mailto:quan.nguyenhai1979@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>quan.nguyenhai1979@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Trần Thị Kiều Diễm -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Trần Thị Kiều Diễm (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Phó phòng – Điều phối viên chương trình TA dành cho người lớn
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Điều phối chương trình</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý lịch dạy và học</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Theo dõi tiến độ</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phối hợp với bộ phận chuyên môn giám sát chất lượng giảng dạy</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0905119272" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0905 119 272</span>
+                                        </a>
+                                        <a href="mailto:ttkd1983@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>ttkd1983@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Trần Tố Quyên -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Trần Tố Quyên (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Chuyên viên – Thư ký phòng – Điều phối viên chương trình TA dành cho thiếu nhi và thiếu niên và chương trình Flexi-time
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0945855308" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0945 855 308</span>
+                                        </a>
+                                        <a href="mailto:toquyentran637@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>toquyentran637@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:academic@giaviet.edu.vn" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>academic@giaviet.edu.vn</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Nguyễn Thị Nhất Uyên -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Nguyễn Thị Nhất Uyên (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Chuyên viên – Bộ phận khảo thí và đảm bảo chất lượng
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Điều phối công tác thi cuối khóa</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phối hợp triển khai kỳ thi quốc tế IELTS và Cambridge YLE</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0329084177" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0329 084 177</span>
+                                        </a>
+                                        <a href="mailto:nguyenthinhatuyen97@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>nguyenthinhatuyen97@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:test@giaviet.edu.vn" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>test@giaviet.edu.vn</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHÒNG KINH DOANH -->
+                        <div class="border-b border-gray-200 pb-2 mb-6 mt-10">
+                            <h2 class="text-xl font-bold font-display text-[#00174f] uppercase tracking-wide flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[22px]">trending_up</span>
+                                Phòng Kinh Doanh
+                            </h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card: Lê Kim Thoa -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Lê Kim Thoa (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng Tổ tư vấn & Chăm sóc khách hàng
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý đội ngũ</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phân công nhiệm vụ</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Giám sát chất lượng</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Cải thiện dịch vụ khách hàng</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0775897997" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0775 897 997</span>
+                                        </a>
+                                        <a href="mailto:lethoa369@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>lethoa369@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:giavietreception@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>giavietreception@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Võ Lê Uyển Nhi -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Võ Lê Uyển Nhi (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng Tổ Marketing & Tổ chức sự kiện <br class="hidden md:inline">(Bộ phận Marketing & Truyền thông)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Lên kế hoạch</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Triển khai hoạt động marketing</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Giám sát truyền thông</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0964440746" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0964 440 746</span>
+                                        </a>
+                                        <a href="mailto:nna0786@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>nna0786@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:marketing@giaviet.edu.vn" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>marketing@giaviet.edu.vn</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Ngô Trần Trọng Đức -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Ngô Trần Trọng Đức (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng Tổ Marketing & Tổ chức sự kiện <br class="hidden md:inline">(Bộ phận Tổ chức sự kiện)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Tổ chức sự kiện</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0762483357" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0762 483 357</span>
+                                        </a>
+                                        <a href="mailto:ngotrantrongduc26032003@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>ngotrantrongduc26032003@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PHÒNG BAN HỖ TRỢ -->
+                        <div class="border-b border-gray-200 pb-2 mb-6 mt-10">
+                            <h2 class="text-xl font-bold font-display text-[#00174f] uppercase tracking-wide flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[22px]">support_agent</span>
+                                Phòng Ban Hỗ Trợ
+                            </h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card: Lê Kim Thoa (Nhân sự) -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Lê Kim Thoa (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng Tổ Nhân sự
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý nhân sự</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Công tác hành chính</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Tuyển dụng</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Đào tạo nhân sự</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Tổ chức sự kiện kết nối nội bộ</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0775897997" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0775 897 997</span>
+                                        </a>
+                                        <a href="mailto:lethoa369@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>lethoa369@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:hr@giaviet.edu.vn" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>hr@giaviet.edu.vn</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Phan Thị Kim Thanh -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Phan Thị Kim Thanh (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng Tổ Trợ giảng
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phân công</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Giám sát</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Hỗ trợ</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Đánh giá chất lượng trợ giảng</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Đề xuất đào tạo</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0346350094" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0346 350 094</span>
+                                        </a>
+                                        <a href="mailto:kimthanhphan43@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>kimthanhphan43@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Lê Nguyễn Tố Nguyên -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Lê Nguyễn Tố Nguyên (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng tổ Kế toán
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý thu chi</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Báo cáo tài chính</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Theo dõi công nợ</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Theo dõi chi phí</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0933103936" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0933 103 936</span>
+                                        </a>
+                                        <a href="mailto:nguyenkt0809@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>nguyenkt0809@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Võ Văn Giàu -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Võ Văn Giàu (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng tổ Thiết bị
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý cơ sở vật chất</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Quản lý trang thiết bị</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Giám sát phòng học</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>In ấn tài liệu</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0902431067" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0902 431 067</span>
+                                        </a>
+                                        <a href="mailto:vvgiau2811@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>vvgiau2811@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:giavietteacherservice@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>giavietteacherservice@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CÁC ĐƠN VỊ & CHI NHÁNH -->
+                        <div class="border-b border-gray-200 pb-2 mb-6 mt-10">
+                            <h2 class="text-xl font-bold font-display text-[#00174f] uppercase tracking-wide flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[22px]">business</span>
+                                Các Đơn Vị & Chi Nhánh
+                            </h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Card: Huỳnh Minh Thư -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Huỳnh Minh Thư (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Tổ trưởng Trung tâm RISE
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Nghiên cứu</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Cải tiến quy trình</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Phát triển giải pháp đổi mới</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Nâng cao hiệu quả công việc</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0939808769" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0939 808 769</span>
+                                        </a>
+                                        <a href="mailto:mminhthu.0304@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>mminhthu.0304@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Lê Văn Khánh -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Lê Văn Khánh (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Trưởng Chi nhánh Bình Minh
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0329725205" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0329 725 205</span>
+                                        </a>
+                                        <a href="mailto:levankhanh456123@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>levankhanh456123@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:giavietbinhminh@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>giavietbinhminh@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Cao Bùi Quốc Thắng -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Cao Bùi Quốc Thắng (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Trưởng Chi nhánh Ô Môn
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0939239666" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0939 239 666</span>
+                                        </a>
+                                        <a href="mailto:qthangct0410@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>qthangct0410@gmail.com</span>
+                                        </a>
+                                        <a href="mailto:giavietomon@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>giavietomon@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Quách Canh Thi -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Quách Canh Thi (Mr)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Quản lý 4Cs Café
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-1.5">
+                                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Phụ trách</span>
+                                        <ul class="space-y-1 text-xs text-gray-600 font-body">
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Điều hành hoạt động quán</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Theo dõi vận hành</span>
+                                            </li>
+                                            <li class="flex items-start gap-1.5">
+                                                <span class="material-symbols-outlined text-primary text-[14px] mt-0.5 shrink-0">check_circle</span>
+                                                <span>Tổ chức hoạt động & sự kiện</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0939160118" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0939160118</span>
+                                        </a>
+                                        <a href="mailto:quachcanhthi9@gmail.com" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>quachcanhthi9@gmail.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card: Nguyễn Thị Thanh Kiều -->
+                            <div class="bg-white rounded-2xl border border-gray-100/80 shadow-sm p-6 space-y-4 hover:shadow-md hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-[26px]">account_circle</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-bold text-base text-[#00174f] tracking-tight leading-tight">Nguyễn Thị Thanh Kiều (Ms)</h3>
+                                            <div class="bg-slate-50 text-slate-700 text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 mt-1.5 font-medium inline-block">
+                                                Giám đốc Du học Visa
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2 pt-2 border-t border-gray-50">
+                                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Liên hệ</span>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="tel:0946477047" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">call</span>
+                                            <span>0946477047</span>
+                                        </a>
+                                        <a href="mailto:kieu.ntt@duhocvisa.vn" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>kieu.ntt@duhocvisa.vn</span>
+                                        </a>
+                                        <a href="mailto:info@duhocvisa.vn" class="flex items-center gap-2 text-xs font-bold text-gray-700 hover:text-primary transition-colors bg-slate-50 px-3 py-2 rounded-xl border border-gray-200/50 w-fit break-all">
+                                            <span class="material-symbols-outlined text-[16px] text-gray-500">mail</span>
+                                            <span>info@duhocvisa.vn</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Sidebar Navigation -->
+                    <div
+                        class="w-full md:w-[30%] lg:w-[25%] flex flex-col gap-10 mb-8 md:mb-0 sticky top-32 self-start">
+                        <div>
+                            <h3 class="text-[#00174f] text-2xl font-bold font-display mb-6 tracking-tight">Danh mục bài
+                                viết</h3>
+                            <ul class="flex flex-col gap-5 font-body text-[16px] font-bold text-[#00174f]">
+                                <li><a href="ve-gia-viet.html"
+                                        class="hover:text-primary transition-colors flex items-center group">Về Gia
+                                        Việt</a></li>
+                                <li class="flex flex-col gap-3">
+                                    <a href="#" onclick="event.preventDefault()"
+                                        class="hover:text-primary transition-colors flex items-center group">Tổ chức &
+                                        Nhân sự</a>
+                                                                        <ul
+                                        class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                        <li><a href="quy-trinh-tiep-nhan-giao-vien-moi.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình tiếp nhận giáo viên mới</a></li>
+                                        <li><a href="quy-trinh-xin-ngung-cong-tac.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình giáo viên xin ngưng công tác</a></li>
+                                        <li><a href="quy-trinh-cham-cong-tinh-luong.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy trình chấm công & tính lương giảng dạy</a></li>
+                                        <li><a href="nhan-su-phu-trach.html"
+                                                class="text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-primary before:mr-2">Nhân sự phụ trách - Liên hệ</a></li>
+                                        <li><a href="quy-dinh-tac-phong.html"
+                                                class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định về tác phong</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#" onclick="event.preventDefault()" class="hover:text-primary transition-colors flex items-center group">Đào
+                                        tạo & Đảm bảo chất lượng</a></li>
+                                <li class="flex flex-col gap-3">
+                                    <a href="he-thong-ho-tro.html" class="hover:text-primary transition-colors flex items-center group font-medium text-[#00174f]">Hệ thống & Hỗ trợ</a>
+                                    <ul class="flex flex-col gap-3 pl-4 border-l-2 border-gray-100 font-normal text-sm text-gray-500">
+                                        <li><a href="app-gia-viet.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">App Gia Việt</a></li>
+                                        <li><a href="quy-dinh-in-an.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Quy định in ấn & Hỗ trợ khác</a></li>
+                                        <li><a href="gop-y-phan-hoi.html" class="hover:text-primary transition-colors flex items-center before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-gray-300 before:mr-2 hover:before:bg-primary">Kênh nhận góp ý & phản hồi</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-[#00174f] text-xl font-bold font-display mb-6 tracking-tight mt-4">Bài viết
+                                liên quan</h3>
+                            <p class="text-sm text-gray-400 font-body">Đang cập nhật...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="w-full bg-[#0d59f2] text-white py-12">
+<div class="w-full flex justify-center">
+<div class="w-full max-w-[1280px] px-4 md:px-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-8 w-full">
+<div class="lg:col-span-4">
+<div class="flex items-center gap-2 mb-4">
+<h3 class="text-xl font-bold font-display whitespace-nowrap">Gia Viet English Language Center</h3>
+</div>
+<p class="text-blue-100 text-sm leading-relaxed font-body">
+                                    Tiếng Anh và sự tự tin vươn ra thế giới.
+                                </p>
+</div>
+<div class="lg:col-span-2">
+<h4 class="font-bold text-lg mb-4 font-display">Về chúng tôi</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li><a class="hover:text-white transition-colors" href="ve-gia-viet.html">Về Gia Việt</a></li>
+<li><a class="hover:text-white transition-colors" href="quy-dinh-tac-phong.html">Quy định tác phong</a></li>
+<li><a class="hover:text-white transition-colors" href="che-do-luong-thuong.html">Chế độ lương - Thưởng</a></li>
+<li><a class="hover:text-white transition-colors" href="dai-ngo-giao-vien.html">Đãi ngộ giáo viên</a></li>
+</ul>
+</div>
+<div class="lg:col-span-3">
+                                <h4 class="font-bold text-lg mb-4 font-display">Chương trình đào tạo</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li><a class="hover:text-white transition-colors" href="tieng-anh-thieu-nhi-thieu-nien.html">Tiếng Anh Thiếu nhi - Thiếu niên</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Tiếng Anh Người lớn</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Flexi-time English Program</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Elite Kids Program</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Liên kết đào tạo</a></li>
+</ul>
+</div>
+<div class="lg:col-span-3">
+                                <h4 class="font-bold text-lg mb-4 font-display">Liên hệ</h4>
+<ul class="space-y-2 text-blue-100 text-sm font-body">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-sm mt-0.5">location_on</span>
+<span>Trụ sở chính: Số 39, Đường Mậu Thân, Phường Ninh Kiều, Thành phố Cần Thơ</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>0292 383 1000</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>info@giaviet.edu.vn</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="border-t border-blue-400/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-blue-200 text-sm font-body">© 2026 Gia Viet English Center. All rights reserved.</p>
+<div class="flex gap-4 font-body">
+<a class="text-blue-200 hover:text-white transition-colors" href="https://www.facebook.com/giavietcenter" target="_blank">Facebook</a>
+<a class="text-blue-200 hover:text-white transition-colors" href="https://youtube.com/@trungtamanhngugiaviet?si=iZlHr2h5nTGlV0TS" target="_blank">Youtube</a>
+<a class="text-blue-200 hover:text-white transition-colors" href="https://giaviet.edu.vn/" target="_blank">Website</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+        </main>
+    </div>
+</body>
+
+</html>

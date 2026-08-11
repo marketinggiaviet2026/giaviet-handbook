@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "firebase": "^12.14.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  },
+  "scripts": {
+    "build": "esbuild login.js --bundle --minify --target=es2020 --outfile=login.dist.js",
+    "vercel-build": "npm run build"
+  }
+}
